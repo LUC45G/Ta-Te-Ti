@@ -1,6 +1,12 @@
 # Prerequisites
 *.d
 
+# Codeblocks files
+*.layout
+*.depend
+bin/
+obj/
+
 # Object files
 *.o
 *.ko
