@@ -31,12 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="TDAs/List.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="TDAs/listTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="TDAs/lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lista.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -7,27 +7,38 @@
 
 void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
-    l = (tLista*) malloc(sizeof(tLista));
-    (*l)->siguiente = NULL;
-    (*l)->elemento = NULL;
+
+    tLista header = (tLista ) malloc(sizeof(struct celda));
+
+    header->siguiente = NULL;
+    header->elemento = NULL;
+    *l = header;
+
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e) {
-    tPosicion aux = (tPosicion) malloc(sizeof(tPosicion));
-    aux->elemento = e;
+    tPosicion aux;
+    aux = (tPosicion) malloc(sizeof(struct celda));
+    aux->elemento = (void*) e;
     aux->siguiente = p->siguiente; // Crea el nodo y lo inicializa
     p->siguiente = aux; // Cambia el puntero del nodo previo
+
 }
 
 void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
     tPosicion aux = p->siguiente; // Nodo auxiliar, almacena el nodo a eliminar
     p->siguiente = aux->siguiente; // Mueve el puntero al lugar deseado
-    free(aux->elemento); // Libera memoria del valor
+    fEliminar(aux->elemento); // Libera memoria del valor
     free(aux); // Libera memoria del nodo
 }
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
-
+    tPosicion aux = l_fin(*l);
+    while (aux != NULL){
+        fEliminar(aux->elemento);
+        free(aux);
+        aux = l_fin(*l);
+    }
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
@@ -39,17 +50,16 @@ tPosicion l_primera(tLista l) {
 }
 
 tPosicion l_siguiente(tLista l, tPosicion p) {
+    if ( p->siguiente == NULL ) exit(LST_NO_EXISTE_SIGUIENTE);
+
     return p->siguiente;
 }
 
 tPosicion l_anterior(tLista l, tPosicion p) {
     tPosicion aux = l;
 
-    if ( p == l->siguiente) {
-        // Avisar del error, no se como
-        printf("ERROR NRO %d", LST_NO_EXISTE_ANTERIOR);
-        return NULL;
-    }
+    if ( p == l->siguiente) exit(LST_NO_EXISTE_ANTERIOR); // Avisar del error
+
     // Busco el anterior a p
     while( aux->siguiente != NULL && aux->siguiente != p ) {
         aux = aux->siguiente;
