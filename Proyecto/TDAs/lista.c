@@ -26,6 +26,9 @@ void l_insertar(tLista l, tPosicion p, tElemento e) {
 }
 
 void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
+
+    if ( p == l_fin(l) ) exit(LST_POSICION_INVALIDA);
+
     tPosicion aux = p->siguiente; // Nodo auxiliar, almacena el nodo a eliminar
     p->siguiente = aux->siguiente; // Mueve el puntero al lugar deseado
     fEliminar(aux->elemento); // Libera memoria del valor
@@ -42,6 +45,8 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
+    if ( p == l_fin(l)->siguiente ) exit(LST_POSICION_INVALIDA);
+    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
     return p->elemento;
 }
 
