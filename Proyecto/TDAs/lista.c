@@ -38,7 +38,7 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
     tPosicion aux = l_fin(*l);
     while (aux != NULL){
-        fEliminar(aux->elemento);
+        fEliminar( (tElemento) aux->elemento);
         free(aux);
         aux = l_fin(*l);
     }

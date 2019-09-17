@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1568724968 source:c:\pablo\uni\ta-te-ti\proyecto\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1568751115 source:c:\pablo\uni\ta-te-ti\proyecto\tdas\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1568724968 c:\pablo\uni\ta-te-ti\proyecto\tdas\lista.h
+
+1568751821 source:c:\pablo\uni\ta-te-ti\proyecto\tdas\listtest.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
