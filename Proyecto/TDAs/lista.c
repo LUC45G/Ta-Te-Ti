@@ -36,12 +36,17 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 }
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
-    tPosicion aux = l_fin(*l);
-    while (aux != NULL){
+    tPosicion aux = *l, auxAnterior;
+    int i = 1;
+    while (aux->siguiente != NULL ){
         fEliminar( (tElemento) aux->elemento);
-        free(aux);
-        aux = l_fin(*l);
+        auxAnterior = aux;
+        aux = l_siguiente(l, aux);
+        free(auxAnterior);
+        printf("Eliminado elemento nro: %i con exito.\n", i++);
     }
+
+
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
