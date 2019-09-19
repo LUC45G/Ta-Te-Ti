@@ -6,7 +6,7 @@ void* fEliminar();
 
 int main() {
     tLista list;// = (tLista*) malloc(sizeof(struct celda));
-    tPosicion auxInsert, auxMostrar;
+    tPosicion auxInsert, auxMostrar, auxFin;
     //  int* p = (int*) malloc(sizeof(int)),
     int condition = 1, i, control2 = 0, control1 = 0, index = 0;
 
@@ -44,6 +44,7 @@ int main() {
                 }else{
                     printf("Primero debe crear la Lista\n\n");
                 }
+
                 break;
 
             case 3:
@@ -51,9 +52,10 @@ int main() {
                 system("cls");
                 if(control2){
                     auxMostrar = l_siguiente(list, list);
+                    auxFin = l_fin(list);
                     index = 1;
 
-                    while( auxMostrar->siguiente != NULL ) { // tengo que usar auxMostrar->siguiente en lugar de l_siguiente(list, auxMostrar) porque se rompe sino
+                    while( auxMostrar != auxFin ) { // Cambiar por bandera en el final, e iterar mientras auxMostrar != bandera
                         printf("Elemento %i: %i\n\n", index++, (int) l_recuperar(list, auxMostrar) );
                         auxMostrar = l_siguiente(list, auxMostrar);
                     }
@@ -62,17 +64,16 @@ int main() {
                 }else{
                     printf("Recuerde crear la lista e ingresar al menos un elemento \n\n");
                 }
+
                 break;
             default:
-                l_destruir(&list, fEliminar());
-                l_destruir(&auxInsert, fEliminar());
-                l_destruir(&auxMostrar, fEliminar());
+                l_destruir(&list, (void*) fEliminar);
                 condition=0;
                 break;
         }
+
     }
 
-                // destruir la lista
 
     return 0;
 }
@@ -80,5 +81,6 @@ int main() {
 void* fEliminar(tElemento e) {
     free(e);
     void* x=(void*)0;
+
     return x;
 }

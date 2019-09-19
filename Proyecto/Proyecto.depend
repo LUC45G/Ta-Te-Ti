@@ -15,3 +15,19 @@
 	<stdlib.h>
 	"lista.h"
 
+1567801289 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1568763507 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1568321980 c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.h
+
+1568763769 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\listtest.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
