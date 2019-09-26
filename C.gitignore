@@ -4,6 +4,8 @@
 # Codeblocks files
 Proyecto/Proyecto.layout
 Proyecto/Proyecto.depend
+*.layout
+*.depend
 bin/
 obj/
 
