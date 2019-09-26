@@ -43,7 +43,7 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
         auxAnterior = aux;
         aux = l_siguiente(l, aux);
         free(auxAnterior);
-        printf("Eliminado elemento nro: %i con exito.\n", i++);
+        printf("Eliminado elemento nro: %i con exito.\n", i++);//poner afuera
     }
 
 

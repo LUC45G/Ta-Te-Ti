@@ -2,8 +2,8 @@
 *.d
 
 # Codeblocks files
-*.layout
-*.depend
+Proyecto/Proyecto.layout
+Proyecto/Proyecto.depend
 bin/
 obj/
 

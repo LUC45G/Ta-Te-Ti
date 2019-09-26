@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
-void* fEliminar();
+void fEliminar();
 
 int main() {
     tLista list;// = (tLista*) malloc(sizeof(struct celda));
@@ -67,7 +67,7 @@ int main() {
 
                 break;
             default:
-                l_destruir(&list, (void*) fEliminar);
+                if ( control1 ) l_destruir(&list, &fEliminar);
                 condition=0;
                 break;
         }
@@ -78,9 +78,9 @@ int main() {
     return 0;
 }
 
-void* fEliminar(tElemento e) {
+void fEliminar(tElemento e) {
     free(e);
-    void* x=(void*)0;
+    //void* x=(void*)0;
 
-    return x;
+    //return x;
 }
