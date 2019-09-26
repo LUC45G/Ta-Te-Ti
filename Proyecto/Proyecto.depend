@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1567801289 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1569539105 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1568321980 c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.h
+
+1569539105 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\listtest.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
