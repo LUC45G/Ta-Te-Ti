@@ -30,17 +30,16 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
     tNodo padre;
     tLista hermanos;
 
-
-    hijo = pa.hijos.siguiente;
+    hijo = l_primera(pa.hijos); // Hijo es puntero al primer hijo de la lista
+    fin = l_fin(pa.hijos); // Fin es el ultimo elemento de la lista de hijos
 
     if( a.raiz == pa ) { // Si pa es la raiz
 
-        if(hijo == NULL ) { // Si el siguiente es nulo, la lista es vacia
+        if(hijo == fin) { // Si el primer elemento es el ultimo, la lista esta vacia
             // Eliminar el nodo sin problemas
         } else {
 
-
-            if(hijo.siguiente == NULL) { // Si no, si el siguiente al siguiente es nulo, la lista tiene un solo elemento
+            if(l_siguiente(pa.hijos, hijo) == NULL) { // Si no, si el siguiente al siguiente es nulo, la lista tiene un solo elemento
 
             } else {
                 exit(ARB_OPERACION_INVALIDA);
@@ -53,7 +52,6 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
         padre = pa.padre; // Padre del nodo a eliminar
         hermanos = Padre.hijos; // Lista de hijos del padre del nodo a eliminar
         ultimoHermano = l_fin(Hermanos); // El final de la lista anterior
-        fin = l_fin(pa.hijos); // El final de la lista de hijos del nodo a eliminar
 
         while( hijo != fin ) { // Agrega todos los hijos a la lista de hermanos
             l_insertar(hermanos, ultimoHermano, hijo.elemento);
@@ -63,6 +61,7 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
         l_insertar(Hermanos, UltimoHermano, hijo.elemento);
 
+        // free y cosas
         l_eliminar(hermanos, pa, fEliminar);
     }
 }
