@@ -31,15 +31,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Headers/arbol.h" />
-		<Unit filename="Headers/lista.h" />
-		<Unit filename="TDAs/arbol.c">
+		<Unit filename="arbol.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="TDAs/lista.c">
+		<Unit filename="arbol.h" />
+		<Unit filename="listTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Testers/listTest.c">
+		<Unit filename="lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lista.h" />
+		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
