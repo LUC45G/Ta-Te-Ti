@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
+/*
 void fEliminar();
 
 int main() {
@@ -84,3 +85,4 @@ void fEliminar(tElemento e) {
 
     //return x;
 }
+*/
