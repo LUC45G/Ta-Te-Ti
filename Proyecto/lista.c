@@ -9,8 +9,9 @@ void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
 
     tLista header = (tLista ) malloc(sizeof(struct celda));
+    tPosicion p = (tPosicion) malloc(sizeof(struct celda));
 
-    header->siguiente = NULL;
+    header->siguiente = p;
     header->elemento = NULL;
     *l = header;
 
@@ -41,7 +42,7 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
     while (aux->siguiente != NULL ){
         fEliminar( (tElemento) aux->elemento);
         auxAnterior = aux;
-        aux = l_siguiente(l, aux);
+        aux = l_siguiente(*l, aux);
         free(auxAnterior);
         printf("Eliminado elemento nro: %i con exito.\n", i++);//poner afuera
     }
@@ -50,7 +51,13 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
-    if ( p == l_fin(l)->siguiente ) exit(LST_POSICION_INVALIDA);
+    if ( p->siguiente == NULL) exit(LST_POSICION_INVALIDA);
+    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
+    return p->elemento;
+}
+
+tElemento l_recuperar2(tLista l, tPosicion p) {
+    if ( p == l_fin(l)->siguiente ) return NULL;
     if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
     return p->elemento;
 }

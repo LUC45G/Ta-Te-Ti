@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "lista.h"
 
-/*
-void fEliminar();
 
-int main() {
+void fEliminar(tElemento e);
+
+int mainQueNoAndaDou() {
     tLista list;// = (tLista*) malloc(sizeof(struct celda));
     tPosicion auxInsert, auxMostrar, auxFin;
     //  int* p = (int*) malloc(sizeof(int)),
@@ -85,4 +85,3 @@ void fEliminar(tElemento e) {
 
     //return x;
 }
-*/

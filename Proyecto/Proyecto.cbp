@@ -35,6 +35,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="arbol.h" />
+		<Unit filename="arbolTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="listTest.c">
 			<Option compilerVar="CC" />
 		</Unit>

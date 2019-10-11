@@ -20,23 +20,23 @@
 	<stdlib.h>
 	"lista.h"
 
-1568936658 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
+1570750969 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
 1570114972 c:\pablo\uni\git test\ta-te-ti\proyecto\lista.h
 
-1570146156 source:c:\pablo\uni\git test\ta-te-ti\proyecto\listtest.c
+1570736010 source:c:\pablo\uni\git test\ta-te-ti\proyecto\listtest.c
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
-1570114972 source:c:\pablo\uni\git test\ta-te-ti\proyecto\main.c
+1570736050 source:c:\pablo\uni\git test\ta-te-ti\proyecto\main.c
 	<stdio.h>
 	<stdlib.h>
 
-1570146100 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
+1570753733 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"
@@ -44,4 +44,10 @@
 
 1570114972 c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.h
 	"lista.h"
+
+1570753377 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltest.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
 

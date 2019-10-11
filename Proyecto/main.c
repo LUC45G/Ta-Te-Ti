@@ -59,7 +59,7 @@ int HayGanador() {
 
 
 
-int main() {
+int mainTATETITOTU() {
     int x, y, control, winner = 0; // Variables de posicion y control
 
     InicializarFichas(); // Inicializa el arreglo de caracteres con ' '
