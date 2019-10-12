@@ -12,7 +12,7 @@ int main() {
     tNodo raiz = malloc(sizeof(tNodo));
     int condition = 1, control2 = 0, control1 = 0, index = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0, insertado = 0;
 
-    printf("Recuerde crear la lista antes de utilizar las operaciones Agregar y Mostrar.\n\n");
+    printf("Recuerde crear el arbol antes de utilizar las operaciones.\n\n");
 
 
 
@@ -25,7 +25,7 @@ int main() {
             case 1:
                 system("cls");  //limpia la pantalla
                 crear_arbol(&arbol);
-                printf("\nLista creada con exito\n\n");
+                printf("\nArbol creado, puede crear su raiz.\n\n");
                 control1 = 1;
                 control2 = 0;
                 break;
@@ -35,12 +35,13 @@ int main() {
                 if (control1){ //SI SE CREÓ EL ARBOL:
                     printf("Ingrese el valor a agregar: \n");
                     scanf("%d", &i);
-                    crear_raiz(arbol,&i);
+                    crear_raiz(arbol,i);
                     raiz = a_raiz(arbol);
-                    printf("\nElemento %i agregado con exito\n\n", i);
+                    printf("\nElemento %i agregado con exito.\n\n", i);
+                    printf("\nRaiz: %i\n\n", a_recuperar(arbol, raiz));
                     control2 = 1;
                 }else{
-                    printf("Primero debe crear la Lista\n\n");
+                    printf("Primero debe crear el arbol.\n\n");
                 }
 
                 break;
@@ -53,6 +54,7 @@ int main() {
                         scanf("%i", &aAgregar);
 
                         a_insertar(arbol, raiz, NULL, &aAgregar);
+                        printf("\nElemento %i agregado con exito.\n\n", a_recuperar(arbol, l_primera(a_hijos(arbol, raiz))));
                         insertado = 1;
                         break;
                     }
@@ -64,11 +66,18 @@ int main() {
                     printf("Que queres agregar\n");
                     scanf("%i", &aAgregar);
 
-                    tNodo p = buscarNodo(arbol, raiz, &padre);
-                    tNodo h = buscarNodo(arbol, raiz, &hermano);
+                    printf("\n\nUsted quiere agregar al nodo %i como hijo de %i y hermano de %i\n\n", aAgregar, padre, hermano);
 
-                    if(p == NULL || h == NULL){
-                        printf("Choto, le erraste");
+                    tNodo p = buscarNodo(arbol, raiz, padre);
+                    tNodo h = buscarNodo(arbol, raiz, hermano);
+
+                    if(p == NULL){
+                        printf("\n\nNo se encontro a %i como padre.\n\n", padre);
+                        break;
+                    }
+
+                    if(h == NULL){
+                        printf("\n\nNo se encontro a %i como hermano.\n\n", hermano);
                         break;
                     }
 
@@ -77,7 +86,7 @@ int main() {
 
 
                 }else{
-                    printf("Recuerde crear la lista e ingresar al menos un elemento \n\n");
+                    printf("Recuerde crear el arbol y su raiz.\n\n");
                 }
 
                 break;

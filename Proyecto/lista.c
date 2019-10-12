@@ -9,17 +9,15 @@ void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
 
     tLista header = (tLista ) malloc(sizeof(struct celda));
-    tPosicion p = (tPosicion) malloc(sizeof(struct celda));
 
-    header->siguiente = p;
+    header->siguiente = NULL;
     header->elemento = NULL;
     *l = header;
 
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e) {
-    tPosicion aux;
-    aux = (tPosicion) malloc(sizeof(struct celda));
+    tPosicion aux = (tPosicion) malloc(sizeof(struct celda));
     aux->elemento = (void*) e;
     aux->siguiente = p->siguiente; // Crea el nodo y lo inicializa
     p->siguiente = aux; // Cambia el puntero del nodo previo
@@ -51,7 +49,7 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
-    if ( p->siguiente == NULL) exit(LST_POSICION_INVALIDA);
+    if ( p == NULL) exit(LST_POSICION_INVALIDA);
     if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
     return p->elemento;
 }
@@ -105,7 +103,6 @@ tPosicion l_ultima(tLista l) {
 
 tPosicion l_fin(tLista l) {
     tPosicion aux = l;
-
     // Busco el ultimo, es decir, el elemento cuyo siguiente sea nulo
     while( aux->siguiente != NULL ) {
         aux = aux->siguiente;
