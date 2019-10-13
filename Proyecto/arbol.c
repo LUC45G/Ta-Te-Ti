@@ -37,6 +37,7 @@ void crear_raiz(tArbol a, tElemento e) {
 }
 
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
+    printf("Insertando %i en el arbol...\n\n", e);
     tPosicion nhPos, primerHermano, ultimoHermano;
     tLista hermanos;
 
@@ -53,9 +54,6 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
 
     if(nh==NULL) {
         if (a->raiz != np) exit(ARB_POSICION_INVALIDA);
-
-        printf("Intenta insertar\n\n");
-
         l_insertar(a->raiz->hijos, a->raiz->hijos, nuevo);
         return;
     }
@@ -168,7 +166,6 @@ tNodo a_raiz(tArbol a) {
 }
 
 tLista a_hijos(tArbol a, tNodo n){
-    printf("hijoooooooooos\n");
     return n->hijos;
 }
 
@@ -191,13 +188,45 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si
 
 }
 
+void MostrarArbol(tArbol arbol, tNodo raiz) {
+
+    tLista    hijos  = raiz->hijos;
+
+    if(hijos == NULL)
+        return;
+
+    tPosicion primer = l_primera(hijos);
+    tPosicion fin    = l_fin(hijos);
+
+    Profundidad(raiz);
+    printf("%i\n", (int) raiz->elemento);
+
+    while(primer != fin) {
+        MostrarArbol(arbol, l_recuperar(hijos, primer));
+        primer = l_siguiente(hijos, primer);
+    }
+
+    //if( primer != NULL )
+      //  MostrarArbol(arbol, l_recuperar(hijos, primer));
+
+
+}
+
+void Profundidad(tNodo raiz) {
+    tNodo p = raiz->padre;
+
+    while(p!=NULL) {
+        printf("--");
+        p = p->padre;
+    }
+
+}
+
 tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
-    printf("\n\nBUSCO NODO \n\n");
     tLista lista = raizActual->hijos;
 
-    printf("raizActual->elemento: %p ==  e: %p -> %i\n\n", raizActual->elemento, e, raizActual->elemento == e );
     if(lista == NULL) {
-        return;
+        return NULL;
     }
     if(raizActual->elemento == e) {
         return raizActual;
@@ -207,16 +236,15 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
     tPosicion aux = l_primera(lista);
 
     while ( aux != NULL && aux != auxFin) {
-        if(( (tNodo)l_recuperar(lista, aux) )->elemento == e)
-            return l_recuperar(lista, aux);
-        else {
-            buscarNodo(a, l_recuperar(lista, aux), e);
-        }
+
+        tNodo recursive = buscarNodo(a, l_recuperar(lista, aux), e);
+        if(recursive != NULL)
+            return recursive;
         aux = l_siguiente(lista, aux);
     }
 
-    if (aux != NULL)
-        buscarNodo(a, l_recuperar(lista, aux), e); // Caso especial en que la lista tiene un solo elemento
+    if (aux == auxFin)
+        return buscarNodo(a, l_recuperar(lista, aux), e); // Caso especial en que la lista tiene un solo elemento
 
     return NULL;
 }

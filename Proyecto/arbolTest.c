@@ -18,7 +18,7 @@ int main() {
 
 
     while(condition) {
-        printf("Ingrese numero : \n1->Crear arbol vacío \n2->Crear raiz  \n3->Agregar elemento \n4->Eliminar elemento \n5-> Falta algo?  \n0->Salir\n\n");
+        printf("Ingrese numero : \n1->Crear arbol vacío \n2->Crear raiz  \n3->Agregar elemento \n4->Mostrar Arbol \n5-> Falta algo?  \n0->Salir\n\n");
         scanf("%i", &condition);
 
         switch(condition) {
@@ -53,8 +53,8 @@ int main() {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
-                        a_insertar(arbol, raiz, NULL, &aAgregar);
-                        printf("\nElemento %i agregado con exito.\n\n", a_recuperar(arbol, l_primera(a_hijos(arbol, raiz))));
+                        a_insertar(arbol, raiz, NULL, aAgregar);
+                        printf("\nElemento %i agregado con exito.\n\n", a_recuperar(arbol, l_recuperar(arbol, l_primera(a_hijos(arbol, raiz)))));
                         insertado = 1;
                         break;
                     }
@@ -82,14 +82,21 @@ int main() {
                     }
 
                     a_insertar(arbol, p, h, aAgregar);
+                    printf("\nElemento %i agregado con exito.\n\n", a_recuperar(arbol, buscarNodo(arbol, raiz, aAgregar)));
 
-
-
-                }else{
+                } else{
                     printf("Recuerde crear el arbol y su raiz.\n\n");
                 }
 
                 break;
+            case 4:
+                if(!control2) {
+                    printf("Recuerde crear el arbol y al menos su raiz.");
+                    break;
+                }
+
+                system("cls");
+                MostrarArbol(arbol, raiz);
             default:
                 condition=0;
                 break;
