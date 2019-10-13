@@ -190,7 +190,7 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si
 
 void MostrarArbol(tArbol arbol, tNodo raiz) {
 
-    tLista    hijos  = raiz->hijos;
+    tLista hijos  = raiz->hijos;
 
     if(hijos == NULL)
         return;
@@ -201,13 +201,13 @@ void MostrarArbol(tArbol arbol, tNodo raiz) {
     Profundidad(raiz);
     printf("%i\n", (int) raiz->elemento);
 
-    while(primer != fin) {
+    while(primer != NULL && primer != fin) {
         MostrarArbol(arbol, l_recuperar(hijos, primer));
         primer = l_siguiente(hijos, primer);
     }
 
-    //if( primer != NULL )
-      //  MostrarArbol(arbol, l_recuperar(hijos, primer));
+    if( primer != NULL )
+        MostrarArbol(arbol, l_recuperar(hijos, primer));
 
 
 }

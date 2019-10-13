@@ -97,6 +97,7 @@ int main() {
 
                 system("cls");
                 MostrarArbol(arbol, raiz);
+                break;
             default:
                 condition=0;
                 break;
