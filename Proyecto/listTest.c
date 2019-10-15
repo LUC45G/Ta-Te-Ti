@@ -79,9 +79,9 @@ int mainQueNoAndaDou() {
     return 0;
 }
 
-void fEliminar(tElemento e) {
+/*void fEliminar(tElemento e) {
     free(e);
     //void* x=(void*)0;
 
     //return x;
-}
+}*/

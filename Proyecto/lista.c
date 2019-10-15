@@ -61,6 +61,9 @@ tElemento l_recuperar2(tLista l, tPosicion p) {
 }
 
 tPosicion l_primera(tLista l) {
+    if(l->siguiente == NULL)
+        return l;
+
     return l->siguiente;
 }
 

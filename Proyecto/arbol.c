@@ -169,25 +169,6 @@ tLista a_hijos(tArbol a, tNodo n){
     return n->hijos;
 }
 
-void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si n = a
-    //busco al nodo n en a
-    tNodo raiz = malloc(sizeof(tNodo));
-    int encontre;
-    if (a->raiz != n){
-        encontre = 0;
-        tLista hijosdeA;
-        crear_lista(&hijosdeA);
-
-        tPosicion buscador = (tPosicion) malloc(sizeof(struct celda));
-        buscador = NULL;//SI BUSCADOR QUEDO EN NULL ES PORQUE n = a
-        raiz = a->raiz;
-        //UNA VEZ ENCONTRADA LA POSICION DEL NODO SETEARLE EL PADRE NULL Y SACARLO DE LA LISTA DE HIJOS DE SU PADRE
-    }
-    tPosicion posDelNodo = (tPosicion) malloc(sizeof(tPosicion));
-
-
-}
-
 void MostrarArbol(tArbol arbol, tNodo raiz) {
 
     tLista hijos  = raiz->hijos;
@@ -247,4 +228,44 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
         return buscarNodo(a, l_recuperar(lista, aux), e); // Caso especial en que la lista tiene un solo elemento
 
     return NULL;
+}
+
+void fEliminar(tElemento e) {
+    free(e);
+}
+
+void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si n = a
+    //busco al nodo n en a
+    //tNodo raiz = n;
+    tNodo raiz = buscarNodo(a, a->raiz, n->elemento);
+
+    if(raiz == NULL)
+        return;
+
+    if(raiz->padre == NULL) {
+        sa = &a;
+        a = NULL;
+        return;
+    }
+
+    tLista hermanos = raiz->padre->hijos;
+    tPosicion primera = l_primera(hermanos);
+    tPosicion fin = l_fin(hermanos);
+
+    while ( primera != NULL && primera != fin ) {
+        if ( l_recuperar(hermanos, primera) == n ) {
+            tNodo nuevaRaiz = malloc(sizeof(tNodo));
+            nuevaRaiz->elemento = n->elemento;
+            nuevaRaiz->hijos = n->hijos;
+            nuevaRaiz->padre = NULL;
+            n->hijos = NULL;
+            (*sa)->raiz = nuevaRaiz;
+            l_eliminar(hermanos, primera, &fEliminar);
+            return;
+        }
+        primera = l_siguiente(hermanos, primera);
+    }
+
+
+
 }
