@@ -7,7 +7,7 @@
 
 // void fEliminar();
 
-int main() {
+int mainArbol() {
     tArbol arbol;
     tNodo raiz = malloc(sizeof(tNodo));
     int condition = 1, control2 = 0, control1 = 0, index = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0, insertado = 0;

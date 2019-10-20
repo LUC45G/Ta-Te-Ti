@@ -38,6 +38,10 @@
 		<Unit filename="arbolTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="ia.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ia.h" />
 		<Unit filename="listTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -48,6 +52,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="partida.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="partida.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
