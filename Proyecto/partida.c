@@ -4,7 +4,7 @@
 #include "partida.h"
 
 
-int main() {
+int mainPartida() {
     tPartida partida = malloc(sizeof(tPartida));
     char* j1; char* j2;
     int opt;

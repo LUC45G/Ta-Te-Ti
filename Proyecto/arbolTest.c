@@ -61,7 +61,7 @@ int mainArbol() {
                         break;
                     }
 
-                    if( l_primera(a_hijos(arbol, p)) == NULL  ) {
+                    if( l_primera(a_hijos(arbol, p)) == a_hijos(arbol, p)  ) {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
