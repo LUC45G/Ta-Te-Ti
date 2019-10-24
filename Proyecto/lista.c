@@ -54,11 +54,6 @@ tElemento l_recuperar(tLista l, tPosicion p) {
     return p->elemento;
 }
 
-tElemento l_recuperar2(tLista l, tPosicion p) {
-    if ( p == l_fin(l)->siguiente ) return NULL;
-    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
-    return p->elemento;
-}
 
 tPosicion l_primera(tLista l) {
     if(l->siguiente == NULL)

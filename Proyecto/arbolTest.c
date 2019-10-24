@@ -61,12 +61,12 @@ int main() {
                         break;
                     }
 
-                    if( l_primera(a_hijos(arbol, p)) == NULL  ) {
+                    if( l_primera(a_hijos(arbol, p)) == l_fin(a_hijos(arbol, p))  ) {//si la lista esta inicializada nunca va a retornar null
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
                         a_insertar(arbol, raiz, NULL, aAgregar);
-                        printf("\nElemento %i agregado con exito1.\n\n", a_recuperar(arbol, l_recuperar(arbol, l_primera(a_hijos(arbol, raiz)))));
+                        printf("\nElemento %i agregado con exito.\n\n", a_recuperar(arbol, l_recuperar(arbol, l_primera(a_hijos(arbol, raiz)))));//SE ROMPE EN EL L_RECUPERAR ?
                         insertado = 1;
                         break;
                     }

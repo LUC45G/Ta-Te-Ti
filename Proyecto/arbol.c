@@ -7,7 +7,7 @@ void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 // tPosicion buscarNodo(tNodo raiz, tNodo buscado, tPosicion buscador);
 
 void crear_arbol(tArbol *a){
-    tArbol arbol = (tArbol) malloc(sizeof(tArbol)); //o tNodo?
+    tArbol arbol = (tArbol) malloc(sizeof(struct arbol)); //o tNodo?
     //todos los atributos en nulo
     arbol->raiz->elemento = NULL; //ver los -> y .
     arbol->raiz->hijos = NULL;
@@ -20,7 +20,7 @@ void crear_raiz(tArbol a, tElemento e) {
     if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
 
     // Creo un nodo iliar que sera la raiz
-    tNodo nodoAux = malloc(sizeof(tNodo));
+    tNodo nodoAux = (tNodo)malloc(sizeof(struct nodo));
 
     // Creo e inicializo como vacia la lista de hijos
     tLista listaHijos;
@@ -38,33 +38,44 @@ void crear_raiz(tArbol a, tElemento e) {
 
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     printf("Insertando %i en el arbol...\n\n", e);
+    int i = 0;
     tPosicion nhPos, primerHermano, ultimoHermano;
+
     tLista hermanos;
-
     //creo el nodo a insertar
-    tNodo nuevo = malloc(sizeof(tNodo));
-    //creo una lista de hijos vacía para el nuevo nodo
-    tLista listaHijos = malloc(sizeof(tLista));
-    crear_lista(&listaHijos);
+    tNodo nuevo;
+    printf("Llega %i", i++);
 
+    nuevo = (tNodo)malloc(sizeof(struct nodo)); //ACA ES DONDE SE ROMPE
+    printf("Llega %i", i++);
+    //creo una lista de hijos vacía para el nuevo nodo
+    tLista listaHijos = (tLista)malloc(sizeof(tLista));
+    printf("Llega %i", i++);
+
+    crear_lista(&listaHijos);
+    printf("Llega %i", i++);
     //Set de atributos del nuevo nodo
     nuevo->elemento = e;
     nuevo->padre = np;
     nuevo->hijos = listaHijos;
+    printf("NOooooLlega %i", i++);
 
-    if(nh==NULL) {
+    /*if(nh==NULL) {
         if (a->raiz != np) exit(ARB_POSICION_INVALIDA);
         l_insertar(a->raiz->hijos, a->raiz->hijos, nuevo);
         return;
-    }
+    }*/
+    printf("NOoooooooLlega %i", i++);
 
-    if (nh->padre != np) exit(ARB_POSICION_INVALIDA);
-
+    /*if (nh->padre != np) exit(ARB_POSICION_INVALIDA);
+    printf("NOLlega %i", i++);
+*/
     if (nh != NULL){
         // Recorrer lista de hijos de np en busca de nh
         hermanos = np->hijos; // Lista de hijos del padre del nodo a eliminar
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
+    printf("linea78");
 
         while(primerHermano != ultimoHermano) {
             if(l_recuperar(hermanos, primerHermano) == nh){
@@ -78,7 +89,7 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     }else{  //nuevo es el primer hijo de np
         l_insertar(np->hijos,l_primera(np->hijos),(tElemento) nuevo);
     }
-
+    printf("termino de insertar");
     return nuevo;
 }
 
@@ -216,7 +227,7 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
     tPosicion auxFin = l_fin(lista);
     tPosicion aux = l_primera(lista);
 
-    while ( aux != NULL && aux != auxFin) {
+    while ( aux != lista && aux != auxFin) {
 
         tNodo recursive = buscarNodo(a, l_recuperar(lista, aux), e);
         if(recursive != NULL)
@@ -224,7 +235,7 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
         aux = l_siguiente(lista, aux);
     }
 
-    if (aux == auxFin)
+    if (aux != lista)
         return buscarNodo(a, l_recuperar(lista, aux), e); // Caso especial en que la lista tiene un solo elemento
 
     return NULL;
