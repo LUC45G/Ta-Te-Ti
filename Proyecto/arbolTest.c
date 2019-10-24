@@ -7,7 +7,7 @@
 
 // void fEliminar();
 
-int main() {
+int mainArbol() {
     tArbol arbol;
     tNodo raiz = malloc(sizeof(tNodo));
     int condition = 1, control2 = 0, control1 = 0, index = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0, insertado = 0;
@@ -60,8 +60,7 @@ int main() {
                         printf("\n\nNo se encontro a %i como padre.\n\n", padre);
                         break;
                     }
-
-                    if( l_primera(a_hijos(arbol, p)) == l_fin(a_hijos(arbol, p))  ) {//si la lista esta inicializada nunca va a retornar null
+                    if( l_primera(a_hijos(arbol, p)) == a_hijos(arbol, p)  ) {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 

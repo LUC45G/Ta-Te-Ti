@@ -107,5 +107,16 @@ tPosicion l_fin(tLista l) {
     }
 
     return aux;
+}
 
+int l_longitud(tLista l) {
+    tPosicion prim = l->siguiente, fin = l_fin(l);
+    int q = 0;
+
+    while(q != NULL && prim != fin) {
+        prim = prim->siguiente;
+        q++;
+    }
+
+    return q;
 }
