@@ -8,10 +8,14 @@ void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 
 void crear_arbol(tArbol *a){
     tArbol arbol = (tArbol) malloc(sizeof(struct arbol)); //o tNodo?
+
+    // if(arbol == NULL) romper
+
     //todos los atributos en nulo
+    printf("Holaxxxx");
     arbol->raiz->elemento = NULL; //ver los -> y .
     arbol->raiz->hijos = NULL;
-
+    printf("Hola1");
     *a = arbol;
 }
 
@@ -19,12 +23,19 @@ void crear_raiz(tArbol a, tElemento e) {
 
     if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
 
+
+
+     printf("termino de crear la raiz\n");
     // Creo un nodo iliar que sera la raiz
     tNodo nodoAux = (tNodo)malloc(sizeof(struct nodo));
+
+    printf("termino de crear la raiz\n");
 
     // Creo e inicializo como vacia la lista de hijos
     tLista listaHijos;
     crear_lista(&listaHijos);
+
+    printf("termino de crear la raiz\n");
 
     // Inicializo el nuevo nodo que sera raiz
     nodoAux->elemento = e;
@@ -34,10 +45,14 @@ void crear_raiz(tArbol a, tElemento e) {
     // Asigno la nueva raiz
     a->raiz = nodoAux;
 
+
+
 }
 
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
-    printf("Insertando %i en el arbol...\n\n", e);
+    printf("Insertando %i en el arbol como hijo de %i\n\n", e, np->elemento);
+
+
     int i = 0;
     tPosicion nhPos, primerHermano, ultimoHermano;
 
@@ -49,7 +64,7 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     nuevo = (tNodo)malloc(sizeof(struct nodo)); //ACA ES DONDE SE ROMPE
     printf("Llega %i", i++);
     //creo una lista de hijos vacía para el nuevo nodo
-    tLista listaHijos = (tLista)malloc(sizeof(tLista));
+    tLista listaHijos;
     printf("Llega %i", i++);
 
     crear_lista(&listaHijos);
@@ -58,24 +73,16 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     nuevo->elemento = e;
     nuevo->padre = np;
     nuevo->hijos = listaHijos;
-    printf("NOooooLlega %i", i++);
 
-    /*if(nh==NULL) {
-        if (a->raiz != np) exit(ARB_POSICION_INVALIDA);
-        l_insertar(a->raiz->hijos, a->raiz->hijos, nuevo);
-        return;
-    }*/
-    printf("NOoooooooLlega %i", i++);
 
-    /*if (nh->padre != np) exit(ARB_POSICION_INVALIDA);
-    printf("NOLlega %i", i++);
-*/
     if (nh != NULL){
+        printf("Nodo padre: %i :: Nodo brother: %i\n\n", np->elemento, nh->elemento);
+
         // Recorrer lista de hijos de np en busca de nh
         hermanos = np->hijos; // Lista de hijos del padre del nodo a eliminar
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
-    printf("linea78");
+        printf("linea67");
 
         while(primerHermano != ultimoHermano) {
             if(l_recuperar(hermanos, primerHermano) == nh){
@@ -193,12 +200,12 @@ void MostrarArbol(tArbol arbol, tNodo raiz) {
     Profundidad(raiz);
     printf("%i\n", (int) raiz->elemento);
 
-    while(primer != NULL && primer != fin) {
+    while(primer != hijos && primer != fin) {
         MostrarArbol(arbol, l_recuperar(hijos, primer));
         primer = l_siguiente(hijos, primer);
     }
 
-    if( primer != NULL )
+    if( primer != hijos )
         MostrarArbol(arbol, l_recuperar(hijos, primer));
 
 
@@ -265,7 +272,7 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si
 
     while ( primera != NULL && primera != fin ) {
         if ( l_recuperar(hermanos, primera) == n ) {
-            tNodo nuevaRaiz = malloc(sizeof(tNodo));
+            tNodo nuevaRaiz = (tNodo) malloc(sizeof(struct nodo));
             nuevaRaiz->elemento = n->elemento;
             nuevaRaiz->hijos = n->hijos;
             nuevaRaiz->padre = NULL;

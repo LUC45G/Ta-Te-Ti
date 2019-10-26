@@ -1,31 +1,25 @@
 # depslib dependency file v1.0
-1570761783 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\main.c
-	<stdio.h>
+1571960262 source:c:\pablo\uni\git test\ta-te-ti\proyecto\ia.c
 	<stdlib.h>
+	"lista.h"
+	"arbol.h"
+	"ia.h"
 
-1569539105 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.c
+1571960262 c:\pablo\uni\git test\ta-te-ti\proyecto\lista.h
+
+1571960262 c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.h
+	"lista.h"
+
+1571960262 c:\pablo\uni\git test\ta-te-ti\proyecto\ia.h
+	"arbol.h"
+	"partida.h"
+
+1571960262 c:\pablo\uni\git test\ta-te-ti\proyecto\partida.h
+
+1571963604 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
-
-1568321980 c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\lista.h
-
-1569539105 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\tdas\listtest.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1568936658 source:c:\pablo\uni\git test\ta-te-ti\proyecto\tdas\lista.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1571950140 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1570114972 c:\pablo\uni\git test\ta-te-ti\proyecto\lista.h
 
 1571336911 source:c:\pablo\uni\git test\ta-te-ti\proyecto\listtest.c
 	<stdio.h>
@@ -36,43 +30,21 @@
 	<stdio.h>
 	<stdlib.h>
 
-1571950139 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
+1571963419 source:c:\pablo\uni\git test\ta-te-ti\proyecto\partida.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"partida.h"
+
+1571965039 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"
 	"lista.h"
 
-1570114972 c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.h
-	"lista.h"
-
-1571950140 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltest.c
+1571965018 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltest.c
 	<stdio.h>
 	<stdlib.h>
-	"lista.h"
-	"arbol.h"
-
-1571167854 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\arboltest.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-	"arbol.h"
-
-1570761783 c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\lista.h
-
-1570761783 c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\arbol.h
-	"lista.h"
-
-1571167050 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\lista.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1571153357 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\listtest.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1571167362 source:c:\users\cornflower\downloads\orga\ta-te-ti\proyecto\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"

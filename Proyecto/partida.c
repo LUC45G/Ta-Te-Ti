@@ -5,7 +5,7 @@
 
 
 int mainPartida() {
-    tPartida partida = malloc(sizeof(tPartida));
+    tPartida partida = (tPartida) malloc(sizeof(struct partida));
     char* j1; char* j2;
     int opt;
 
@@ -29,7 +29,16 @@ int mainPartida() {
 }
 
 void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombre, char * j2_nombre) {
-    tTablero tab = malloc(sizeof(tTablero));
+
+    // Creo el tablero
+    tTablero tab = (tTablero) malloc(sizeof(struct tablero));
+
+    // Inicializo celdas vacias
+    for(int i = 0; i < 3; i++)
+        for(int j = 0; j < 3; j++)
+            tab->grilla[i][j] = PART_SIN_MOVIMIENTO;
+
+    // Leo los nombres
     char c;
     int i = 0;
     c = *j1_nombre;
@@ -46,6 +55,7 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
         (j2_nombre)++;
     }
 
+    //Seteo los porongos de la partida
     (*p)->estado           = PART_EN_JUEGO;
     (*p)->modo_partida     = modo_partida;
     (*p)->tablero          = tab;
@@ -53,7 +63,8 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 }
 
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y) {
-
+   // p->tablero->grilla[mov_x][mox_y] = (p->turno_de == PART_JUGADOR_1) PART_JUGADOR_1 : PART_JUGADOR_2;
+    //p->turno_de = (p->turno_de == PART_JUGADOR_1) PART_JUGADOR_2 : PART_JUGADOR_1;
 }
 
 void finalizar_partida(tPartida * p) {
