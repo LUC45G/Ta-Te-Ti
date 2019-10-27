@@ -28,7 +28,7 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
             estado->grilla[i][j] = p->tablero->grilla[i][j];
         }
     }
-	
+
 	// Se asume que el estado de la partida es PART_EN_JUEGO por lo que, la utilidad del estado
 	// inicialmente es IA_NO_TERMINO
     estado->utilidad = IA_NO_TERMINO;
@@ -47,7 +47,7 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     ejecutar_min_max((*b));
 }
 
-/** 
+/**
 >>>>>  A IMPLEMENTAR   <<<<<
 */
 void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){}
@@ -93,14 +93,72 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 - IA_PIERDE_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX perdió la partida.
 - IA_NO_TERMINO en caso contrario.
 **/
-static int valor_utilidad(tEstado e, int jugador_max){}
+static int valor_utilidad(tEstado e, int jugador_max) {
+
+    int i, j;
+
+    // Chequeo por fila
+    for(i = 0; i < 3; ++i) {
+        if(e->grilla[i][0] == e->grilla[i][1] && e->grilla[i][0] == e->grilla[i][2]) {
+            if(e->grilla[i][0] == PART_JUGADOR_1) {
+                return IA_GANA_MAX;
+            }
+            if(e->grilla[i][0] == PART_JUGADOR_2) {
+                return IA_PIERDE_MAX;
+            }
+        }
+    }
+
+    // Chequeo por columna
+    for(i = 0; i < 3; ++i) {
+        if(e->grilla[0][i] == e->grilla[i][1] && e->grilla[1][i] == e->grilla[2][i]) {
+            if(e->grilla[0][i] == PART_JUGADOR_1) {
+                return IA_GANA_MAX;
+            }
+            if(e->grilla[0][i] == PART_JUGADOR_2) {
+                return IA_PIERDE_MAX;
+            }
+        }
+    }
+
+    // Chequeo por diagonales
+    if(e->grilla[0][2] == e->grilla[1][1] && e->grilla[0][2] == e->grilla[2][0]) {
+        if(e->grilla[0][2] == PART_JUGADOR_1) {
+            return IA_GANA_MAX;
+        }
+        if(e->grilla[0][2] == PART_JUGADOR_2) {
+            return IA_PIERDE_MAX;
+        }
+    }
+
+    if(e->grilla[0][0] == e->grilla[1][1] && e->grilla[0][0] == e->grilla[2][2]) {
+        if(e->grilla[0][0] == PART_JUGADOR_1) {
+            return IA_GANA_MAX;
+        }
+        if(e->grilla[0][0] == PART_JUGADOR_2) {
+            return IA_PIERDE_MAX;
+        }
+    }
+
+    // Si no gano nadie, se fija si se puede seguir jugando
+    for(i = 0; i < 3; ++i) {
+        for(j = 0; j < 3; ++j) {
+            if(e->grilla[i][j] == PART_SIN_MOVIMIENTO) {
+                return IA_NO_TERMINO;
+            }
+        }
+    }
+
+    // Si no puede seguir jugando y nadie gano, devuelve empate
+    return IA_EMPATA_MAX;
+}
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
 Un estado sucesor corresponde a la clonación del estado E, junto con la incorporación de un nuevo movimiento
 realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posición que se encuentra libre en el estado E.
-La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocación de la función 
+La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocación de la función
 estados_sucesores(estado, ficha) retornaría dos listas L1 y L2 tal que:
 - L1 y L2 tienen exactamente los mismos estados sucesores de ESTADO a partir de jugar FICHA.
 - El orden de los estado en L1 posiblemente sea diferente al orden de los estados en L2.
@@ -111,7 +169,7 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){}
 >>>>>  A IMPLEMENTAR   <<<<<
 Inicializa y retorna un nuevo estado que resulta de la clonación del estado E.
 Para esto copia en el estado a retornar los valores actuales de la grilla del estado E, como su valor
-de utilidad. 
+de utilidad.
 **/
 static tEstado clonar_estado(tEstado e){}
 

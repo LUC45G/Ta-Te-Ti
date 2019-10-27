@@ -3,6 +3,27 @@
 #include <time.h>
 #include "partida.h"
 
+char GetChar(int x) {
+    if(x == PART_JUGADOR_1) {
+        return 'X';
+    }
+    if ( x == PART_JUGADOR_2 ) {
+        return 'O';
+    }
+
+    return ' ';
+}
+
+
+void ImprimirTablero(tTablero t) {
+
+    printf(" %c | %c | %c ", GetChar(t->grilla[0,0]), GetChar(t->grilla[0,1]), GetChar(t->grilla[0,2]));
+    printf("---+---+---");
+    printf(" %c | %c | %c ", GetChar(t->grilla[1,0]), GetChar(t->grilla[1,1]), GetChar(t->grilla[1,2]));
+    printf("---+---+---");
+    printf(" %c | %c | %c ", GetChar(t->grilla[2,0]), GetChar(t->grilla[2,1]), GetChar(t->grilla[2,2]));
+
+}
 
 int mainPartida() {
     tPartida partida = (tPartida) malloc(sizeof(struct partida));
@@ -11,7 +32,7 @@ int mainPartida() {
 
     printf("Seleccione modo de juego: \n");
     printf("1) Humano vs Humano. \n");
-    printf("2) Humano vs IA.");
+    printf("2) Humano vs IA.\n\n");
 
     scanf("%d", &opt);
 
@@ -63,8 +84,8 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 }
 
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y) {
-   // p->tablero->grilla[mov_x][mox_y] = (p->turno_de == PART_JUGADOR_1) PART_JUGADOR_1 : PART_JUGADOR_2;
-    //p->turno_de = (p->turno_de == PART_JUGADOR_1) PART_JUGADOR_2 : PART_JUGADOR_1;
+    p->tablero->grilla[mov_x][mov_y] = p->turno_de;
+    p->turno_de = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
 }
 
 void finalizar_partida(tPartida * p) {
