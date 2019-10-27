@@ -6,6 +6,7 @@
 void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 // tPosicion buscarNodo(tNodo raiz, tNodo buscado, tPosicion buscador);
 
+
 void crear_arbol(tArbol *a){
     tArbol arbol = (tArbol) malloc(sizeof(struct arbol)); //o tNodo?
 
@@ -110,14 +111,23 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
     fin = l_fin(pa->hijos); // Fin es el ultimo elemento de la lista de hijos
 
     if( a->raiz == pa ) { // Si pa es la raiz
-
-        if(hijo == fin) { // Si el primer elemento es el ultimo, la lista esta vacia
+        printf("\nIntentando eliminar la raiz\n\n");
+        printf("Longitud lista de hijos: %i", l_longitud(pa->hijos));
+        if(l_longitud(pa->hijos) == 0) { // Si el primer elemento es el ultimo, la lista esta vacia
+            printf("raiz sin hijos\n");
             l_destruir(&(pa->hijos), fEliminar);
+            printf("un hijo 1");
             fEliminar(pa->elemento);
+            printf("un hijo 2");
             free(pa);
+            printf("un hijo 3");
+            a->raiz = NULL;
+            printf("un hijo 4");
+
         } else {
 
-            if(l_siguiente(pa->hijos, hijo) == NULL) { // Si no, si el siguiente al siguiente es nulo, la lista tiene un solo elemento
+            if(l_longitud(pa->hijos) == 1) { // Si no, si el siguiente al siguiente es nulo, la lista tiene un solo elemento
+                printf("raiz con un solo hijo\n");
                 a->raiz = hijo->elemento;
             } else {
                 exit(ARB_OPERACION_INVALIDA);
@@ -127,14 +137,19 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
     } else { // Si pa no es la raiz
 
+        printf("\nIntentando eliminar un nodo generico\n\n");
+
         padre = pa->padre; // Padre del nodo a eliminar
         hermanos = padre->hijos; // Lista de hijos del padre del nodo a eliminar
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
 
+        printf("Padre de %i: %i\n%i tiene hijos: %i\n\n", pa->elemento, padre->elemento, pa->elemento, l_longitud(pa->hijos) );
+
         while(primerHermano != ultimoHermano) {
-            if(l_recuperar(hermanos, primerHermano) == pa){
+            if(l_recuperar(hermanos, primerHermano) == pa) {
                 paPos = primerHermano;
+                printf("Elemento encontrado en la lista de hermanos");
                 break;
             }
             primerHermano = l_siguiente(hermanos, primerHermano);
@@ -248,9 +263,6 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
     return NULL;
 }
 
-void fEliminar(tElemento e) {
-    free(e);
-}
 
 void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si n = a
     //busco al nodo n en a
@@ -278,7 +290,7 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si
             nuevaRaiz->padre = NULL;
             n->hijos = NULL;
             (*sa)->raiz = nuevaRaiz;
-            l_eliminar(hermanos, primera, &fEliminar);
+            //l_eliminar(hermanos, primera, &fEliminar);
             return;
         }
         primera = l_siguiente(hermanos, primera);

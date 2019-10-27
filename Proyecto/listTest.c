@@ -3,7 +3,7 @@
 #include "lista.h"
 
 
-void fEliminar(tElemento e);
+// void fEliminar(tElemento e);
 
 int mainQueNoAndaDou() {
     tLista list;// = (tLista*) malloc(sizeof(struct celda));
@@ -68,7 +68,7 @@ int mainQueNoAndaDou() {
 
                 break;
             default:
-                if ( control1 ) l_destruir(&list, &fEliminar);
+//                if ( control1 ) l_destruir(&list, &fEliminar);
                 condition=0;
                 break;
         }

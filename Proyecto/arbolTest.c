@@ -9,14 +9,14 @@
 #define POS_NULA NULL
 
 void recorrido_raiz(tArbol A);
-void fEliminar(tElemento e);
-/*
+/*void fEliminar(tElemento e);
+
 void fEliminar(tElemento e){
     printf("Elemento a eliminar: %d", *((int*) e));
     free(e);
     printf("hace el free");
-}
-*/
+}*/
+
 
 void recorrido_raiz(tArbol A) {
         tLista lista_raiz_1 = a_hijos(A, a_raiz(A));
@@ -32,7 +32,7 @@ void recorrido_raiz(tArbol A) {
         }
 }
 
-int main(){
+int mainBruno(){
 
     //CREACIÓN DEL ÁRBOL
     printf("Hola");
@@ -87,7 +87,7 @@ int main(){
     //tNodo hijo2_raiz = a_insertar(A, a_raiz(A), NULL, &e3);
 
     //a_eliminar(A, hijo2_raiz, fEliminar);
-    a_eliminar(A, hijo1_raiz, fEliminar);
+    // a_eliminar(A, hijo1_raiz, fEliminar);
     //printf("Elimino sin problemas");
     recorrido_raiz(A);
 

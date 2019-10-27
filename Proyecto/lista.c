@@ -42,7 +42,7 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
         auxAnterior = aux;
         aux = l_siguiente(*l, aux);
         free(auxAnterior);
-        printf("Eliminado elemento nro: %i con exito.\n", i++);//poner afuera
+        //printf("Eliminado elemento nro: %i con exito.\n", i++);//poner afuera
     }
 
 
@@ -115,6 +115,10 @@ int l_longitud(tLista l) {
 
     while(q != NULL && prim != fin) {
         prim = prim->siguiente;
+        q++;
+    }
+
+    if(l->siguiente != NULL) {
         q++;
     }
 
