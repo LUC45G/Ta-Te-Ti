@@ -13,30 +13,21 @@ void crear_arbol(tArbol *a){
     // if(arbol == NULL) romper
 
     //todos los atributos en nulo
-    printf("Holaxxxx");
     arbol->raiz->elemento = NULL; //ver los -> y .
     arbol->raiz->hijos = NULL;
-    printf("Hola1");
     *a = arbol;
 }
 
 void crear_raiz(tArbol a, tElemento e) {
 
     if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
-
-
-
-     printf("termino de crear la raiz\n");
-    // Creo un nodo iliar que sera la raiz
+    // Creo un nodo auxiliar que sera la raiz
     tNodo nodoAux = (tNodo)malloc(sizeof(struct nodo));
 
-    printf("termino de crear la raiz\n");
 
     // Creo e inicializo como vacia la lista de hijos
     tLista listaHijos;
     crear_lista(&listaHijos);
-
-    printf("termino de crear la raiz\n");
 
     // Inicializo el nuevo nodo que sera raiz
     nodoAux->elemento = e;
@@ -53,23 +44,17 @@ void crear_raiz(tArbol a, tElemento e) {
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     printf("Insertando %i en el arbol como hijo de %i\n\n", e, np->elemento);
 
-
-    int i = 0;
     tPosicion nhPos, primerHermano, ultimoHermano;
 
     tLista hermanos;
     //creo el nodo a insertar
     tNodo nuevo;
-    printf("Llega %i", i++);
 
     nuevo = (tNodo)malloc(sizeof(struct nodo)); //ACA ES DONDE SE ROMPE
-    printf("Llega %i", i++);
     //creo una lista de hijos vacía para el nuevo nodo
     tLista listaHijos;
-    printf("Llega %i", i++);
 
     crear_lista(&listaHijos);
-    printf("Llega %i", i++);
     //Set de atributos del nuevo nodo
     nuevo->elemento = e;
     nuevo->padre = np;
@@ -77,13 +62,11 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
 
 
     if (nh != NULL){
-        printf("Nodo padre: %i :: Nodo brother: %i\n\n", np->elemento, nh->elemento);
 
         // Recorrer lista de hijos de np en busca de nh
         hermanos = np->hijos; // Lista de hijos del padre del nodo a eliminar
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
-        printf("linea67");
 
         while(primerHermano != ultimoHermano) {
             if(l_recuperar(hermanos, primerHermano) == nh){
@@ -97,7 +80,6 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     }else{  //nuevo es el primer hijo de np
         l_insertar(np->hijos,l_primera(np->hijos),(tElemento) nuevo);
     }
-    printf("termino de insertar");
     return nuevo;
 }
 

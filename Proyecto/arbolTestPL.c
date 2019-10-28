@@ -67,7 +67,7 @@ int main() {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
-                        a_insertar(arbol, raiz, NULL, aAgregar);
+                        a_insertar(arbol, p, NULL, aAgregar);
                         printf("\nElemento %i agregado con exito1.\n\n", a_recuperar(arbol, l_recuperar(arbol, l_primera(a_hijos(arbol, raiz)))));
                         insertado = 1;
                         break;

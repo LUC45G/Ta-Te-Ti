@@ -7,9 +7,7 @@
 
 void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
-    printf("hola entre");
     tLista header = (tLista ) malloc(sizeof(struct celda));
-    printf("hola");
     header->siguiente = NULL;
     header->elemento = NULL;
     *l = header;
