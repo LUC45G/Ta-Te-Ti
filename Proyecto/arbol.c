@@ -8,7 +8,7 @@ void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 
 
 void crear_arbol(tArbol *a){
-    tArbol arbol = (tArbol) malloc(sizeof(struct arbol)); //o tNodo?
+    tArbol arbol = (tArbol) malloc(sizeof(struct arbol));
 
     // if(arbol == NULL) romper
 
@@ -83,12 +83,58 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     return nuevo;
 }
 
+/*
+tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
+        //Creo el nuevo nodo y lo inicializo
+        tNodo nuevo = (tNodo) malloc(sizeof(struct nodo));
+        tLista hijosDeNuevo = (tLista) malloc(sizeof(struct celda));
+        crear_lista(&hijosDeNuevo);
+        nuevo->elemento = e;
+        nuevo->padre = np;
+        nuevo->hijos = hijosDeNuevo;
+        //Hijos del padre del nuevo nodo
+        tLista hijosDePa = np->hijos;
+
+        if (nh == NULL){
+            l_insertar(hijosDePa,l_fin(hijosDePa),(tElemento) nuevo);
+        }else{
+            //Vamos a buscar la posicion del hermano "nh" para agregar al "nuevo"
+            tPosicion primerHijoDePa = l_primera(hijosDePa);
+            tPosicion ultimoHijoDePa = l_fin(hijosDePa);
+            tPosicion nodoHermano;
+            int encontre = 0; //Lo uso para terminar el while siencuentro a nh
+
+            while (primerHijoDePa != ultimoHijoDePa && !encontre){
+                if (l_recuperar(hijosDePa,primerHijoDePa) == nh){ //Si encentro a la posicion de nh:
+                        encontre = 1;
+                        nh = primerHijoDePa;
+                }else{
+                    l_siguiente(hijosDePa,primerHijoDePa);
+                }
+            }
+            //Si cuando sale del while, no encontró a nh entonces es porque el ultimo es nh
+            //Aca podríamos comparar una vez mas y tirar el error si no es == nh
+            if (!encontre){
+                nodoHermano = ultimoHijoDePa;
+            }
+            //Una vez que encontre la posicion de "nh", inserto al "nuevo"
+            l_insertar(hijosDePa,nodoHermano,(tElemento) nuevo);
+        }
+
+        return nuevo;
+
+}
+*/
+
+void f(tElemento e) {}
+
 void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
     tPosicion hijo, ultimoHermano, fin, paPos, primerHermano;
     tNodo padre;
     tLista hermanos;
 
+    tLista hijos = pa->hijos;
     hijo = l_primera(pa->hijos); // Hijo es puntero al primer hijo de la lista
     fin = l_fin(pa->hijos); // Fin es el ultimo elemento de la lista de hijos
 
@@ -110,7 +156,7 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
             if(l_longitud(pa->hijos) == 1) { // Si no, si el siguiente al siguiente es nulo, la lista tiene un solo elemento
                 printf("raiz con un solo hijo\n");
-                a->raiz = hijo->elemento;
+                a->raiz = l_recuperar(hijos, hijo);
             } else {
                 exit(ARB_OPERACION_INVALIDA);
             }
@@ -126,34 +172,82 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
 
-        printf("Padre de %i: %i\n%i tiene hijos: %i\n\n", pa->elemento, padre->elemento, pa->elemento, l_longitud(pa->hijos) );
+        printf("Padre de %i: %i\n", pa->elemento, padre->elemento);
+
+        int longitudHermanos = l_longitud(hermanos);
+        printf("cantidad de hermanos: %i \n", longitudHermanos);
+
 
         while(primerHermano != ultimoHermano) {
+            printf("pa (%i) == currentNodo (%i) : %i\n", pa->elemento, ((tNodo)(l_recuperar(hermanos, primerHermano)))->elemento, l_recuperar(hermanos, primerHermano) == pa );
             if(l_recuperar(hermanos, primerHermano) == pa) {
-                paPos = primerHermano;
-                printf("Elemento encontrado en la lista de hermanos");
+
+                if(primerHermano = l_primera(hermanos)) {
+                    paPos = hermanos;
+                }
+                else {
+                    paPos = l_anterior(hermanos, primerHermano);
+                }
+
+                printf("Elemento encontrado en la lista de hermanos, en el while\n");
                 break;
             }
             primerHermano = l_siguiente(hermanos, primerHermano);
         }
 
-
-
-        while( hijo != fin ) { // Agrega todos los hijos a la lista de hermanos
-            l_insertar(hermanos, ultimoHermano, hijo->elemento);
-            hijo = l_siguiente(hermanos, hijo->elemento);
-            ultimoHermano = l_siguiente(hermanos, ultimoHermano);
+        if(l_recuperar(hermanos, ultimoHermano) == pa) {
+                if(ultimoHermano = l_primera(hermanos)) {
+                    paPos = hermanos;
+                }
+                else {
+                    paPos = l_anterior(hermanos, ultimoHermano);
+                }
+                printf("Elemento encontrado en la lista de hermanos, en el if\n");
         }
 
-        l_insertar(hermanos, ultimoHermano, hijo->elemento);
+    //borrar al nodo actual con el fEliminar que borre el nodo
+        //borrar la estructura de la lista pero no borrar los nodos
+        //tener cuidado con el centinela en la lista de los hijos
+        tNodo hijoNodo;
+
+        //Hijo es puntero al primer hijo de la lista
+        while( hijo != fin ) { // Agrega todos los hijos a la lista de hermanos
+            hijoNodo = l_recuperar(hijos, hijo);
+            hijoNodo->padre = padre;
+            l_insertar(hermanos, ultimoHermano, hijoNodo);//ESTABLECER EL NUEVO PADRE
+            //ACTUALIZAR EL PADRE A LOS NODOS HIJOS
+            //tNodo padreDeHijoNodo = hijoNodo->padre;
+            //padreDeHijoNodo = padre;
+
+            hijo = l_siguiente(hijos, hijo);
+            ultimoHermano = l_siguiente(hermanos, ultimoHermano);
+        }
+        //printf("LLEGO ");
+
+        //if(!(hijo == hermanos || hijo == fin)) {
+        if (hijo != fin){
+          //printf("LLEGO 10");
+            hijoNodo = l_recuperar(hijos, hijo);
+          //printf("LLEGO 20");
+            hijoNodo->padre = padre;
+          //printf("LLEGO 30");
+            l_insertar(hermanos, ultimoHermano, hijoNodo);
+          //printf("LLEGO 40");
+        }
+        tNodo ultimaInsercion = l_recuperar(hijos, hijo);
+        ultimaInsercion->padre = padre;
+        l_insertar(hermanos,ultimoHermano,ultimaInsercion);
 
         // free y cosas, falta buscar papos
-        l_eliminar(hermanos, paPos, fEliminar);
-        l_destruir(&(pa->hijos), fEliminar);
-        fEliminar(pa->elemento);
+
+        l_eliminar(hermanos, paPos, &f);
+        l_destruir(&(pa->hijos), &f);
+        //fEliminar(pa->elemento);
         free(pa);
+        //printf("LLEGO5 \n\n");
     }
 }
+
 
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
     destruirRecursivo(a, fEliminar, (*a)->raiz);

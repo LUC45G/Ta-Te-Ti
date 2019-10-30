@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
-
+#include "arbol.h"
 
 /* Metodos para operar con la lista */
 
 void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
-    tLista header = (tLista ) malloc(sizeof(struct celda));
+    tLista header = (tLista) malloc(sizeof(struct celda));
     header->siguiente = NULL;
     header->elemento = NULL;
     *l = header;
@@ -108,13 +108,17 @@ tPosicion l_fin(tLista l) {
 }
 
 int l_longitud(tLista l) {
+
+    printf("\nunalongitud\n");
+
     tPosicion prim = l->siguiente, fin = l_fin(l);
     int q = 0;
 
-    while(q != NULL && prim != fin) {
+    while(prim != fin) {
         prim = prim->siguiente;
         q++;
     }
+
 
     if(l->siguiente != NULL) {
         q++;

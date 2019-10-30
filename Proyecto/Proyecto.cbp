@@ -38,6 +38,9 @@
 		<Unit filename="arbolTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="arbolTestPL.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="ia.c">
 			<Option compilerVar="CC" />
 		</Unit>

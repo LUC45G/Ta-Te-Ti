@@ -10,7 +10,7 @@ void InicializarFichas() {
     }
 }
 
-void ImprimirTablero() {
+void ImprimirTablero0() {
     printf(" %c | %c | %c \n", fichas[0], fichas[1], fichas[2]);
     printf("---+---+---\n");
     printf(" %c | %c | %c \n", fichas[3], fichas[4], fichas[5]);

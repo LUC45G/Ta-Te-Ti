@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1571960262 source:c:\pablo\uni\git test\ta-te-ti\proyecto\ia.c
+1572227094 source:c:\pablo\uni\git test\ta-te-ti\proyecto\ia.c
 	<stdlib.h>
 	"lista.h"
 	"arbol.h"
@@ -16,37 +16,44 @@
 
 1571960262 c:\pablo\uni\git test\ta-te-ti\proyecto\partida.h
 
-1571963604 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
+1572381026 source:c:\pablo\uni\git test\ta-te-ti\proyecto\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
+
+1572210738 source:c:\pablo\uni\git test\ta-te-ti\proyecto\listtest.c
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
-1571336911 source:c:\pablo\uni\git test\ta-te-ti\proyecto\listtest.c
-	<stdio.h>
-	<stdlib.h>
-	"lista.h"
-
-1570736050 source:c:\pablo\uni\git test\ta-te-ti\proyecto\main.c
+1572267138 source:c:\pablo\uni\git test\ta-te-ti\proyecto\main.c
 	<stdio.h>
 	<stdlib.h>
 
-1571963419 source:c:\pablo\uni\git test\ta-te-ti\proyecto\partida.c
+1572227094 source:c:\pablo\uni\git test\ta-te-ti\proyecto\partida.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"partida.h"
 
-1571965039 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
+1572381948 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"
 	"lista.h"
 
-1571965018 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltest.c
+1572382261 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltest.c
 	<stdio.h>
 	<stdlib.h>
 	<stdio.h>
 	<stdlib.h>
 	"arbol.h"
 	"lista.h"
+
+1572382285 source:c:\pablo\uni\git test\ta-te-ti\proyecto\arboltestpl.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
 

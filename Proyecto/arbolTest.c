@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include "arbol.h"
 #include "lista.h"
-
 #define POS_NULA NULL
 
 void recorrido_raiz(tArbol A);
-/*void fEliminar(tElemento e);
+void fEliminar(tElemento e);
 
+/*
 void fEliminar(tElemento e){
     printf("Elemento a eliminar: %d", *((int*) e));
     free(e);
@@ -32,10 +32,10 @@ void recorrido_raiz(tArbol A) {
         }
 }
 
-int mainBruno(){
+int main(){
 
     //CREACIÓN DEL ÁRBOL
-    printf("Hola");
+    //printf("Hola");
     tArbol A;
     printf("Hola");
     int * ent=(int*)malloc(sizeof(int));
@@ -60,10 +60,10 @@ int mainBruno(){
 
     //INSERTO ELEMENTOS COMO NODOS HIJOS DE LA RAIZ
     //printf("Inserto hijo1 de raiz (2) e hijo2 de raiz (3) \n");
-    int e2 = 2;
-    int e3 = 3;
-    int e4 = 4;
-    int e5 = 5;
+    int e2 = 1;
+    int e3 = 2;
+    int e4 = 3;
+    int e5 = 4;
     //int e3 = 3;
     tNodo hijo1_raiz = a_insertar(A, a_raiz(A), NULL, &e2);
     tElemento elem = a_recuperar(A, hijo1_raiz);
@@ -87,8 +87,8 @@ int mainBruno(){
     //tNodo hijo2_raiz = a_insertar(A, a_raiz(A), NULL, &e3);
 
     //a_eliminar(A, hijo2_raiz, fEliminar);
-    // a_eliminar(A, hijo1_raiz, fEliminar);
-    //printf("Elimino sin problemas");
+    a_eliminar(A, hijo1_raiz, &fEliminar);
+    printf("Elimino sin problemas");
     recorrido_raiz(A);
 
 
