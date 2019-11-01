@@ -32,7 +32,7 @@ void recorrido_raiz(tArbol A) {
         }
 }
 
-int main(){
+int maiin(){
 
     //CREACIÓN DEL ÁRBOL
     //printf("Hola");

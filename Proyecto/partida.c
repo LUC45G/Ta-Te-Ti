@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "ia.h"
 #include "partida.h"
 
-char GetChar(int x) {
-    if(x == PART_JUGADOR_1) {
+char GetChar(int *x) {
+    if(*x == PART_JUGADOR_1) {
         return 'X';
     }
-    if ( x == PART_JUGADOR_2 ) {
+    if (*x == PART_JUGADOR_2 ) {
         return 'O';
     }
 
@@ -25,9 +26,11 @@ void ImprimirTablero(tTablero t) {
 
 }
 
-int mainPartida() {
+int main() {
     tPartida partida = (tPartida) malloc(sizeof(struct partida));
-    char* j1; char* j2;
+    char* j1 = malloc(300);
+    char* j2 = malloc(300);
+    char* aux = malloc(21);
     int opt;
 
     printf("Seleccione modo de juego: \n");
@@ -37,32 +40,46 @@ int mainPartida() {
     scanf("%d", &opt);
 
     printf("Ingrese nombre del jugador 1: ");
-    scanf("%c", &j1);
+    scanf("%c", &aux);
+    scanf("%s", &j1);
 
     printf("Ingrese nombre del jugador 2: ");
-    scanf("%c", &j2);
+    scanf("%c", &aux);
+    scanf("%s", &j2);
 
-    struct tm *tm_struct = localtime(time(NULL));
-    int hour = (tm_struct->tm_hour) + (tm_struct->tm_min) + (tm_struct->tm_sec);
-    nueva_partida(&partida, opt, hour%2, j1, j2);
+    printf("llego 1");
+    nueva_partida(&partida, opt, 1, j1, j2);
 
 
 }
 
 void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombre, char * j2_nombre) {
 
+    int u = 0;
+
+    printf("llego %i", ++u);
     // Creo el tablero
     tTablero tab = (tTablero) malloc(sizeof(struct tablero));
+    tBusquedaAdversaria b;
+
+    printf("llego %i", ++u);
 
     // Inicializo celdas vacias
-    for(int i = 0; i < 3; i++)
-        for(int j = 0; j < 3; j++)
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++) {
             tab->grilla[i][j] = PART_SIN_MOVIMIENTO;
+        }
+    }
+
+    printf("llego %i", ++u);
 
     // Leo los nombres
     char c;
     int i = 0;
-    c = *j1_nombre;
+    printf("llego %i", ++u);
+    c = (*j1_nombre);
+
+    printf("llego %i", ++u);
 
     while(c != '\0') {
         ((*p)->nombre_jugador_1)[i++] = c;
@@ -76,11 +93,19 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
         (j2_nombre)++;
     }
 
+    printf("llego %i", ++u);
+
     //Seteo los porongos de la partida
     (*p)->estado           = PART_EN_JUEGO;
     (*p)->modo_partida     = modo_partida;
     (*p)->tablero          = tab;
     (*p)->turno_de         = comienza;
+
+    printf("llego %i", ++u);
+
+    if(modo_partida == 2) {
+        crear_busqueda_adversaria(&b, p);
+    }
 }
 
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y) {
