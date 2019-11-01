@@ -12,6 +12,14 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
+static int max(a,b) {
+    return (((a) > (b)) ? (a) : (b));
+}
+
+static int min(a,b) {
+    return (((a) < (b)) ? (a) : (b));
+}
+
 void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     int i, j;
     tEstado estado;
@@ -104,7 +112,9 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 **/
-void destruir_busqueda_adversaria(tBusquedaAdversaria * b){}
+void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
+    free(b);
+}
 
 // ===============================================================================================================
 // FUNCIONES Y PROCEDEMIENTOS AUXILIARES
@@ -132,7 +142,63 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 - ALPHA y BETA indican sendos valores correspondientes a los nodos ancestros a N en el árbol de búsqueda A.
 - JUGADOR_MAX y JUGADOR_MIN indican las fichas con las que juegan los respectivos jugadores.
 **/
-static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min){}
+
+static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
+    if ( valor_utilidad(a_recuperar(a,n), (es_max)?jugador_max:jugador_min) != IA_NO_TERMINO) {
+        ((tEstado)a_recuperar(a, n))->utilidad = valor_utilidad((tEstado)a_recuperar(a, n), (es_max)?jugador_max:jugador_min);
+        return;
+    }
+
+    tLista sucesores;
+    tPosicion ultimoSucesor;
+    tPosicion primerSucesor;
+
+    int mejor_valor_sucesores, valorSucesor;
+
+    if (es_max) {
+        mejor_valor_sucesores = IA_INFINITO_NEG;
+        sucesores = estados_sucesores(a_recuperar(a, n), jugador_max);
+        ultimoSucesor = l_fin(sucesores);
+        primerSucesor = l_primera(sucesores);
+
+        while (primerSucesor != ultimoSucesor ) {
+
+            crear_sucesores_min_max(a, n, !es_max, alpha, beta, jugador_max, jugador_min);
+            valorSucesor = ((tEstado)a_recuperar(a, n))->utilidad;
+
+            mejor_valor_sucesores = max(mejor_valor_sucesores,valorSucesor);
+            alpha = max(alpha, mejor_valor_sucesores);
+
+            if (beta <= alpha) {
+                break;
+            }
+
+        }
+    }
+    else {
+        mejor_valor_sucesores = IA_INFINITO_POS;
+        sucesores = estados_sucesores(a_recuperar(a, n), jugador_min);
+        ultimoSucesor = l_fin(sucesores);
+        primerSucesor = l_primera(sucesores);
+
+        while (primerSucesor != ultimoSucesor ){
+
+            crear_sucesores_min_max(a, n, !es_max, alpha, beta, jugador_max, jugador_min);
+            valorSucesor = ((tEstado)a_recuperar(a, n))->utilidad;
+
+            mejor_valor_sucesores = min(mejor_valor_sucesores,valorSucesor);
+            alpha = min(alpha, mejor_valor_sucesores);
+
+            if (beta >= alpha) {
+                break;
+            }
+        }
+
+    }
+
+
+
+}
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
@@ -235,7 +301,7 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador) {
                 sigEstado->grilla[i][j] = ficha_jugador;                                // Agrego la ficha pertinente
                 sigEstado->utilidad     = valor_utilidad(sigEstado, ficha_jugador);     // Calculo su valor de utilidad
 
-                if (&sigEstado % 3 == 0) {                                              // Si su puntero es divisible por 3
+                if ((int) &sigEstado % 3 == 0) {                                              // Si su puntero es divisible por 3
                     l_insertar(listaReturn, listaReturn, sigEstado);                    // Lo coloco al principio
                 }
                 else {                                                                  // Sino
