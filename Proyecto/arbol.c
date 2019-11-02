@@ -8,39 +8,42 @@ void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 
 
 void crear_arbol(tArbol *a){
-    tArbol arbol = (tArbol) malloc(sizeof(struct arbol));
-
+    //tArbol arbol = (tArbol) malloc(sizeof(struct arbol));
+    *a=(tArbol) malloc(sizeof(struct arbol));
     // if(arbol == NULL) romper
-
+    if((*a)==NULL)
+        exit(ARB_ERROR_MEMORIA);
     //todos los atributos en nulo
+    (*a)->raiz=NULL;
+/*
     arbol->raiz->elemento = NULL; //ver los -> y .
     arbol->raiz->hijos = NULL;
-    *a = arbol;
+    *a = arbol;*/
 }
 
 void crear_raiz(tArbol a, tElemento e) {
-    printf("Crear_Raiz \n\n");
-    printf("Lleg0\n");
-    if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
-    printf("Lleg1\n");
+
+    //if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
+    if((a->raiz)!=NULL) exit(ARB_OPERACION_INVALIDA);
     // Creo un nodo auxiliar que sera la raiz
-    tNodo nodoAux;// = (tNodo)malloc(sizeof(struct nodo));
+    //tNodo nodoAux;// = (tNodo)malloc(sizeof(struct nodo));
+    a->raiz=(tNodo) malloc(sizeof(struct nodo));
 
-    printf("Lleg2\n");
-
+    if(a->raiz==NULL) exit(ARB_ERROR_MEMORIA);
     // Creo e inicializo como vacia la lista de hijos
     tLista listaHijos;
-    printf("Lleg3\n");
     crear_lista(&listaHijos);
-    printf("Lleg4\n");
+    a->raiz->elemento = e;
+    a->raiz->hijos = listaHijos;
+    a->raiz->padre = NULL;
     // Inicializo el nuevo nodo que sera raiz
-    nodoAux->elemento = e;
+    /*nodoAux->elemento = e;
     nodoAux->hijos = listaHijos;
     nodoAux->padre = NULL;
 
     // Asigno la nueva raiz
     a->raiz = nodoAux;
-
+    */
 
 
 }
