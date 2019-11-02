@@ -122,13 +122,11 @@ int RealizarMovimientoIA(tPartida partida) {
 
     printf("Creo la busqueda\n");
     crear_busqueda_adversaria(&b,partida);
-
-    printf("Pido el siguiente movimiento\n");
+    printf("Pido el siguiente movimiento\n");// FLAG
     proximo_movimiento(b,&x,&y);
     auxRet = nuevo_movimiento(partida,x,y);
 
     destruir_busqueda_adversaria(&b);
-
     return auxRet;
 }
 

@@ -19,16 +19,20 @@ void crear_arbol(tArbol *a){
 }
 
 void crear_raiz(tArbol a, tElemento e) {
-
+    printf("Crear_Raiz \n\n");
+    printf("Lleg0\n");
     if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
+    printf("Lleg1\n");
     // Creo un nodo auxiliar que sera la raiz
-    tNodo nodoAux = (tNodo)malloc(sizeof(struct nodo));
+    tNodo nodoAux;// = (tNodo)malloc(sizeof(struct nodo));
 
+    printf("Lleg2\n");
 
     // Creo e inicializo como vacia la lista de hijos
     tLista listaHijos;
+    printf("Lleg3\n");
     crear_lista(&listaHijos);
-
+    printf("Lleg4\n");
     // Inicializo el nuevo nodo que sera raiz
     nodoAux->elemento = e;
     nodoAux->hijos = listaHijos;

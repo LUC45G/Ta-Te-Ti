@@ -7,16 +7,39 @@
 
 void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
+    /*
+    printf("Crear_Lista\n");
     tLista header = (tLista) malloc(sizeof(struct celda));
+    if (header == NULL) exit(LST_ERROR_MEMORIA);
+    printf("Lleg0");
+
     header->siguiente = NULL;
+    printf("Lleg1");
+
     header->elemento = NULL;
+    printf("Lleg2");
     *l = header;
+    printf("Lleg3");
+*/
+    void crear_lista(tLista* l){
+    ///Asigno memoria.
+    *l=(tLista) malloc(sizeof(struct celda));
+    ///Si la memoria no se asigno produce un error.
+    if(*l==NULL)
+        exit(LST_ERROR_MEMORIA);
+
+    (*l) -> elemento=NULL; ///elemento nulo.
+    (*l) -> siguiente=NULL; ///el puntero al sig elemento es nulo.
+
+}
 
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e) {
     tPosicion aux = (tPosicion) malloc(sizeof(struct celda));
-    aux->elemento = (void*) e;
+    if(aux==NULL)
+        exit(LST_ERROR_MEMORIA);
+    aux->elemento = e;
     aux->siguiente = p->siguiente; // Crea el nodo y lo inicializa
     p->siguiente = aux; // Cambia el puntero del nodo previo
 
@@ -110,17 +133,27 @@ tPosicion l_fin(tLista l) {
 int l_longitud(tLista l) {
 
     printf("\nunalongitud\n");
-
-    tPosicion prim = l->siguiente, fin = l_fin(l);
+    printf("l_longitud\n");
+    printf("%i\n", l==NULL);
+    //tPosicion prim = (tPosicion) l;
+    printf("Lleg0\n");
+//    printf("%i\n", prim==NULL);
+    tPosicion prim = l;
+    //prim = (tPosicion)(l->siguiente);
+    printf("Lleg1\n");
+    tPosicion fin = l_fin(l);
+    printf("Lleg2\n");
     int q = 0;
-
+    printf("Lleg3\n");
     while(prim != fin) {
+        printf("While-Lleg4\n");
         prim = prim->siguiente;
+        printf("While-Lleg5\n");
         q++;
     }
-
-
+    printf("Lleg6\n");
     if(l->siguiente != NULL) {
+        printf("IF-Lleg7");
         q++;
     }
 

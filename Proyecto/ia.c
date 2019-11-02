@@ -44,25 +44,29 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     // Inicializa los valores que representarán a los jugadores MAX y MIN respectivamente.
     (*b)->jugador_max = p->turno_de;
     (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
-
+    //printf("Llego-1   ");
     // Inicializa un árbol para la búsqueda adversaria inicialmente vacío.
     crear_arbol(&((*b)->arbol_busqueda));
-
+    //printf("Llego-2   ");
     // Inicializa la raíz del árbol de búsqueda con el estado del tablero T.
     crear_raiz((*b)->arbol_busqueda, estado);
-
+    //printf("Llego 1");
     // Ejecuta algoritmo Min-Max con podas Alpha-Beta.
     ejecutar_min_max((*b));
+    //printf("Llego2");
 }
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 */
 void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
-
+    printf("PROXIMO MOVIMIENTO\n");
     tNodo raiz                  = a_raiz(b->arbol_busqueda);
     tLista sucesores            = a_hijos(b->arbol_busqueda, raiz);
+    printf("%i\n",sucesores == NULL);
+    printf("Lleg0\n");
     int cantidad                = l_longitud(sucesores);
+    printf("Lleg1\n");
     tPosicion posListaSucesores = l_primera(sucesores);
     tNodo nodoSucesor           = l_recuperar(sucesores, posListaSucesores);
     tEstado estadoSucesor       = a_recuperar(b->arbol_busqueda, nodoSucesor);
@@ -93,7 +97,6 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
             tEstado estadoSucesor       = a_recuperar(b->arbol_busqueda, nodoSucesor);
         }
     }
-
     if (estadoGana != NULL) {
         estadoReturn = estadoGana;
     }
@@ -103,7 +106,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
     else {
         estadoReturn = estadoPierde;
     }
-
+    printf("PROXIMO MOVIMIENTO LLEGO");
     diferencia_estados(estadoInicial, estadoReturn, x, y);
 
 
