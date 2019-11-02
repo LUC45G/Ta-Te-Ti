@@ -38,9 +38,11 @@ int ControlVictoria(tTablero tab) {
     for(i = 0; i < 3; ++i) {
         if(tab->grilla[i][0] == tab->grilla[i][1] && tab->grilla[i][0] == tab->grilla[i][2]) {
             if(tab->grilla[i][0] == PART_JUGADOR_1) {
+                printf("------------GANA EN 1-------------");
                 return PART_GANA_JUGADOR_1;
             }
             if(tab->grilla[i][0] == PART_JUGADOR_2) {
+                printf("------------GANA EN 1-------------");
                 return PART_GANA_JUGADOR_2;
             }
         }
@@ -48,11 +50,13 @@ int ControlVictoria(tTablero tab) {
 
     // Chequeo por columna
     for(i = 0; i < 3; ++i) {
-        if(tab->grilla[0][i] == tab->grilla[i][1] && tab->grilla[1][i] == tab->grilla[2][i]) {
+        if(tab->grilla[0][i] == tab->grilla[1][i] && tab->grilla[0][i] == tab->grilla[2][i]) {
             if(tab->grilla[0][i] == PART_JUGADOR_1) {
+                    printf("------------GANA EN 2-------------");
                 return PART_GANA_JUGADOR_1;
             }
             if(tab->grilla[0][i] == PART_JUGADOR_2) {
+                printf("------------GANA EN 2-------------");
                 return PART_GANA_JUGADOR_2;
             }
         }
@@ -61,18 +65,22 @@ int ControlVictoria(tTablero tab) {
     // Chequeo por diagonales
     if(tab->grilla[0][2] == tab->grilla[1][1] && tab->grilla[0][2] == tab->grilla[2][0]) {
         if(tab->grilla[0][2] == PART_JUGADOR_1) {
+                printf("------------GANA EN 3-------------");
             return PART_GANA_JUGADOR_1;
         }
         if(tab->grilla[0][2] == PART_JUGADOR_2) {
+            printf("------------GANA EN 3-------------");
             return PART_GANA_JUGADOR_2;
         }
     }
 
     if(tab->grilla[0][0] == tab->grilla[1][1] && tab->grilla[0][0] == tab->grilla[2][2]) {
         if(tab->grilla[0][0] == PART_JUGADOR_1) {
+                printf("------------GANA EN 4-------------");
             return PART_GANA_JUGADOR_1;
         }
         if(tab->grilla[0][0] == PART_JUGADOR_2) {
+            printf("------------GANA EN 4-------------");
             return PART_GANA_JUGADOR_2;
         }
     }
@@ -90,24 +98,78 @@ int ControlVictoria(tTablero tab) {
     return PART_EMPATE;
 }
 
+int PedirYRealizarMovimientoJugador(tPartida partida) {
+    int x, y, control;
+
+    ImprimirTablero(partida->tablero);
+    control = 0;
+    printf("\nTurno de %s\n", (partida->turno_de == PART_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+
+    do {
+        printf("Ingrese su movimiento\n");
+        printf("x: "); scanf("%i", &x);
+        printf("y: "); scanf("%i", &y);
+        control = ((x>=0) && (x<3)) && ((y>=0) && (y<3));
+    } while ( !control );
+
+    return nuevo_movimiento(partida,x,y);
+
+}
+
+int RealizarMovimientoIA(tPartida partida) {
+    tBusquedaAdversaria b;
+    int x, y, auxRet;
+
+    printf("Creo la busqueda\n");
+    crear_busqueda_adversaria(&b,partida);
+
+    printf("Pido el siguiente movimiento\n");
+    proximo_movimiento(b,&x,&y);
+    auxRet = nuevo_movimiento(partida,x,y);
+
+    destruir_busqueda_adversaria(&b);
+
+    return auxRet;
+}
+
 
 int main() {
     tPartida partida;
     char* j1[50];
     char* j2[50];
     char* aux;
-    int opt, empieza, x, y, control, state;
-    tBusquedaAdversaria b;
+    int opt, empieza, state = PART_EN_JUEGO;
 
     /*PIDO LOS DATOS DE LA PARTIDA*/
 
-    printf("Seleccione modo de juego: \n");
-    printf("1) Humano vs Humano. \n");
-    printf("2) Humano vs IA.\n\n");
+    while(opt != 1 && opt != 2) {
+        printf("Seleccione modo de juego: \n");
+        printf("1) Humano vs Humano. \n");
+        printf("2) Humano vs IA.\n\n");
 
-    printf("Ingrese (3) para ver las reglas\n\n");
+        printf("Ingrese (3) para ver las reglas\n\n");
 
-    scanf("%d", &opt);
+        scanf("%d", &opt);
+
+        if(opt == 3) {
+            printf("\n\n\n\n\n");
+            printf("\t\t\t  Bienvenidx al TaTeTi\n");
+            printf("Primero seleccione un modo de juego: \n");
+            printf("Humano vs Humano: Permite jugar el clasico TaTeTi uno contra uno\n");
+            printf("Humano vs IA: Permite desafiar a una mega avanzada inteligencia artificial\n");
+            printf("\nLas celdas del tablero son:\n\n");
+
+            printf("\t\t\t [0, 0] | [0, 1] | [0, 2] \n");
+            printf("\t\t\t--------+--------+--------\n");
+            printf("\t\t\t [1, 0] | [1, 1] | [1, 2] \n");
+            printf("\t\t\t--------+--------+--------\n");
+            printf("\t\t\t [2, 0] | [2, 1] | [2, 2] \n");
+
+            printf("\nSeleccione un par [x, y] para colocar la ficha deseada y ceda el turno al siguiente jugador.\n\n");
+
+            printf("\t\t\t\tGL HF!\n\n\n\n\n");
+        }
+    }
 
     printf("Ingrese nombre del jugador 1: ");
     scanf("%s", &j1);
@@ -122,7 +184,6 @@ int main() {
 
     /*JUEGO*/
 
-    state = PART_EN_JUEGO;
 
     switch(opt) {
 
@@ -130,39 +191,32 @@ int main() {
             /*MODO JUGADOR VS JUGADOR*/
             // Mientras el movimiento sea valido
             while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
-                ImprimirTablero(partida->tablero);
-                control = 0;
-                printf("\nTurno de %s\n", (partida->turno_de == PART_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
-
-                do {
-                    printf("Ingrese su movimiento\n");
-                    printf("x: "); scanf("%i", &x);
-                    printf("y: "); scanf("%i", &y);
-                    control = ((x>=0) && (x<3)) && ((y>=0) && (y<3));
-                } while ( !control );
-
-                state = nuevo_movimiento(partida,y,x);
-
-
+                state = PedirYRealizarMovimientoJugador(partida);
             }
             break;
 
         case 2:
             /*MODO JUGADOR VS PC*/
-            break;
-        case 3:
-            /*IMPRIMIR REGLAS*/
+            while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
+                if(partida->turno_de == PART_JUGADOR_1) {
+                    state = PedirYRealizarMovimientoJugador(partida);
+                }
+                else {
+                    state = RealizarMovimientoIA(partida);
+                }
+            }
             break;
         default:
             exit(0);
 
     }
 
-    if(partida->estado == PART_EMPATE) {
+    if(state == PART_EMPATE) {
             printf("\n\n\t\t\tEMPATE\n\n");
     }
     else {
-        printf("\n\n\t\t\tGANADOR: %s\n\n", (partida->estado == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+        ImprimirTablero(partida->tablero);
+        printf("\n\n\t\t\tGANADOR: %s\n\n", (state == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_2 : partida->nombre_jugador_1);
     }
 
 
