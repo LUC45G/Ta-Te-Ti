@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include "lista.h"
 
+void fEliminarLista(tElemento e) {
+    free(e);
+}
 
-// void fEliminar(tElemento e);
-
-int mainQueNoAndaDou() {
-    tLista list;// = (tLista*) malloc(sizeof(struct celda));
+int mainListTester() {
+    tLista list;
     tPosicion auxInsert, auxMostrar, auxFin;
-    //  int* p = (int*) malloc(sizeof(int)),
+
     int condition = 1, i, control2 = 0, control1 = 0, index = 0;
 
     printf("Recuerde crear la lista antes de utilizar las operaciones Agregar y Mostrar.\n\n");
@@ -68,7 +69,7 @@ int mainQueNoAndaDou() {
 
                 break;
             default:
-//                if ( control1 ) l_destruir(&list, &fEliminar);
+                if ( control1 ) l_destruir(&list, &fEliminarLista);
                 condition=0;
                 break;
         }
@@ -78,10 +79,3 @@ int mainQueNoAndaDou() {
 
     return 0;
 }
-
-/*void fEliminar(tElemento e) {
-    free(e);
-    //void* x=(void*)0;
-
-    //return x;
-}*/

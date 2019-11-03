@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <stdio.h>
 #include "lista.h"
 #include "arbol.h"
 #include "ia.h"
@@ -12,12 +12,20 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
-static int max(a,b) {
+static int max(int a, int b) {
+    // Calcula el maximo entre a y b
     return (((a) > (b)) ? (a) : (b));
 }
 
-static int min(a,b) {
+static int min(int a, int b) {
+    // Calcula el minimo entre a y b
     return (((a) < (b)) ? (a) : (b));
+}
+
+void fEliminarBusqueda(void * estado){
+    // liberador de estados
+    free(estado);
+    estado = NULL;
 }
 
 void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
@@ -44,29 +52,26 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     // Inicializa los valores que representarán a los jugadores MAX y MIN respectivamente.
     (*b)->jugador_max = p->turno_de;
     (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
-    //printf("Llego-1   ");
+
     // Inicializa un árbol para la búsqueda adversaria inicialmente vacío.
     crear_arbol(&((*b)->arbol_busqueda));
-    //printf("Llego-2   ");
+
     // Inicializa la raíz del árbol de búsqueda con el estado del tablero T.
     crear_raiz((*b)->arbol_busqueda, estado);
-    //printf("Llego 1");
+
     // Ejecuta algoritmo Min-Max con podas Alpha-Beta.
     ejecutar_min_max((*b));
-    //printf("Llego2");
 }
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 */
 void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
-    printf("PROXIMO MOVIMIENTO\n");
+
+    // Declaracion de variables
     tNodo raiz                  = a_raiz(b->arbol_busqueda);
     tLista sucesores            = a_hijos(b->arbol_busqueda, raiz);
-    printf("%i\n",sucesores == NULL);
-    printf("Lleg0\n");
     int cantidad                = l_longitud(sucesores);
-    printf("Lleg1\n");
     tPosicion posListaSucesores = l_primera(sucesores);
     tNodo nodoSucesor           = l_recuperar(sucesores, posListaSucesores);
     tEstado estadoSucesor       = a_recuperar(b->arbol_busqueda, nodoSucesor);
@@ -76,9 +81,10 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
     tEstado estadoPierde        = NULL;
     tEstado estadoReturn        = NULL;
 
-    while(cantidad > 0 && estadoGana == NULL) {
+    while(cantidad > 0 && estadoGana == NULL) { // Mientras haya estados que computar
         cantidad--;
 
+        // Pide el valor de utilidad y lo pone en su "casillero" correspondiente
         if (estadoSucesor->utilidad == IA_GANA_MAX) {
             estadoGana   = estadoSucesor;
         }
@@ -91,32 +97,37 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
             estadoPierde = estadoSucesor;
         }
 
+        // Si puede seguir avanzando, avanza
         if (cantidad > 0) {
-            tPosicion posListaSucesores = l_siguiente(sucesores, posListaSucesores);
-            tNodo nodoSucesor           = l_recuperar(sucesores, posListaSucesores);
-            tEstado estadoSucesor       = a_recuperar(b->arbol_busqueda, nodoSucesor);
+            posListaSucesores = l_siguiente(sucesores, posListaSucesores);
+            nodoSucesor       = l_recuperar(sucesores, posListaSucesores);
+            estadoSucesor     = a_recuperar(b->arbol_busqueda, nodoSucesor);
         }
     }
+
     if (estadoGana != NULL) {
+        // Si puede ganar, gana
         estadoReturn = estadoGana;
     }
     else if (estadoEmpata != NULL) {
+        // Si no puede ganar pero puede empatar, empata
         estadoReturn = estadoEmpata;
     }
     else {
+        // Si no puede nada, pierde
         estadoReturn = estadoPierde;
     }
-    printf("PROXIMO MOVIMIENTO LLEGO");
+
+    // Calcula el par x,y donde jugara la IA
     diferencia_estados(estadoInicial, estadoReturn, x, y);
-
-
 }
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 **/
 void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
-    free(b);
+    a_destruir(&(*b)->arbol_busqueda,&fEliminarBusqueda); // Destruye el arbol de busqueda
+    free(*b); // Libera el struct busqueda
 }
 
 // ===============================================================================================================
@@ -147,18 +158,26 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 **/
 
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
+
+    // Si es un nodo terminal
     if ( valor_utilidad(a_recuperar(a,n), (es_max)?jugador_max:jugador_min) != IA_NO_TERMINO) {
+        // Calcula su valor de utilidad
         ((tEstado)a_recuperar(a, n))->utilidad = valor_utilidad((tEstado)a_recuperar(a, n), (es_max)?jugador_max:jugador_min);
+        // y sale
         return;
     }
 
+    // Si es un nodo a calcular, inicia
+    // Creo las variables
     tLista sucesores;
     tPosicion ultimoSucesor;
     tPosicion primerSucesor;
-
     int mejor_valor_sucesores, valorSucesor;
 
+
+
     if (es_max) {
+
         mejor_valor_sucesores = IA_INFINITO_NEG;
         sucesores = estados_sucesores(a_recuperar(a, n), jugador_max);
         ultimoSucesor = l_fin(sucesores);
@@ -176,7 +195,12 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 break;
             }
 
+            primerSucesor = l_siguiente(sucesores, primerSucesor);
+
         }
+
+
+        ((tEstado)a_recuperar(a, n))->utilidad = alpha;
     }
     else {
         mejor_valor_sucesores = IA_INFINITO_POS;
@@ -195,8 +219,12 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
             if (beta >= alpha) {
                 break;
             }
+
+            primerSucesor = l_siguiente(sucesores, primerSucesor);
         }
 
+
+        ((tEstado)a_recuperar(a, n))->utilidad = beta;
     }
 
 
@@ -218,7 +246,7 @@ static int valor_utilidad(tEstado e, int jugador_max) {
     if( jugador_max == PART_JUGADOR_1 ) {
         min = PART_JUGADOR_2;
         max = PART_JUGADOR_1;
-    }
+    }                           // Elige quien hace de min y quien de max
     else {
         min = PART_JUGADOR_1;
         max = PART_JUGADOR_2;

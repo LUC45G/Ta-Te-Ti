@@ -36,9 +36,10 @@ void crear_lista(tLista * l){
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e) {
-    tPosicion aux = (tPosicion) malloc(sizeof(struct celda));
-    if(aux==NULL)
-        exit(LST_ERROR_MEMORIA);
+    tPosicion aux = (tPosicion) malloc(sizeof(struct celda)); // Reservo memoria
+    if(aux==NULL) {
+        exit(LST_ERROR_MEMORIA); // Para evitar errores de punteros
+    }
     aux->elemento = e;
     aux->siguiente = p->siguiente; // Crea el nodo y lo inicializa
     p->siguiente = aux; // Cambia el puntero del nodo previo
@@ -57,52 +58,48 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
     tPosicion aux = *l, auxAnterior;
-    int i = 1;
-    while (aux->siguiente != NULL ){
-        fEliminar( (tElemento) aux->elemento);
+    while (aux->siguiente != NULL ){ // Por cada elemento dentro de la lista
+        fEliminar( (tElemento) aux->elemento); // Lo elimina con la funcion previa
         auxAnterior = aux;
-        aux = l_siguiente(*l, aux);
-        free(auxAnterior);
-        //printf("Eliminado elemento nro: %i con exito.\n", i++);//poner afuera
+        aux = l_siguiente(*l, aux); // Movimiento de punteros
+        free(auxAnterior); // Liberación de memoria
     }
-
-
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
-    if ( p == NULL) exit(LST_POSICION_INVALIDA);
-    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO);
-    return p->elemento;
+    if ( p == NULL) exit(LST_POSICION_INVALIDA); // Si la posicion es nula, salir
+    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO); // Si es el centinela, salir
+    return p->elemento; // Si no, devuelvo el elemento
 }
 
 
 tPosicion l_primera(tLista l) {
-    if(l->siguiente == NULL)
-        return l;
+    if(l->siguiente == NULL) // Si la lista esta vacia
+        return l; // Devuelvo el centinela
 
-    return l->siguiente;
+    return l->siguiente; // Sino, devuelvo el siguiente al centinela
 }
 
 tPosicion l_siguiente(tLista l, tPosicion p) {
-    if ( p->siguiente == NULL ) exit(LST_NO_EXISTE_SIGUIENTE);
+    if ( p->siguiente == NULL ) exit(LST_NO_EXISTE_SIGUIENTE); // Si se le pide el siguiente al ultimo, salir
 
-    return p->siguiente;
+    return p->siguiente; // Sino devuelvo el siguiente
 }
 
 tPosicion l_anterior(tLista l, tPosicion p) {
-    tPosicion aux = l;
+    tPosicion aux = l; // Nodo de control
 
-    if ( p == l->siguiente) exit(LST_NO_EXISTE_ANTERIOR); // Avisar del error
+    if ( p == l->siguiente) exit(LST_NO_EXISTE_ANTERIOR); // Si se le pide el anterior al primer elemento, salir
 
     // Busco el anterior a p
     while( aux->siguiente != NULL && aux->siguiente != p ) {
         aux = aux->siguiente;
     }
 
-    if (aux->siguiente != NULL) {
-        return aux;
+    if (aux->siguiente != NULL) { // Si el siguiente no es nulo
+        return aux; // Significa que encontro el elemento deseado, entonces devuelvo el anterior
     } else {
-        return NULL;
+        exit(LST_NO_EXISTE_ANTERIOR); // Si no lo encontro, salir
     }
 
 }
@@ -112,7 +109,6 @@ tPosicion l_ultima(tLista l) {
     tPosicion finAux = l_fin(l);
 
     // La posicion que apunta al ultimo elemento es aquella que apunta al que apunta al final.
-    // C > 1 > 2 > 3 > 5 > U ==> [3] es ultima
     while( aux->siguiente != finAux ) {
         aux = aux->siguiente;
     }
@@ -131,29 +127,15 @@ tPosicion l_fin(tLista l) {
 }
 
 int l_longitud(tLista l) {
+    tPosicion prim = l; // Guardo el primero
+    tPosicion fin = l_fin(l); // Guardo el ultimo
+    int q = 0; // Contador
 
-    printf("\nunalongitud\n");
-    printf("l_longitud\n");
-    printf("%i\n", l==NULL);
-    //tPosicion prim = (tPosicion) l;
-    printf("Lleg0\n");
-//    printf("%i\n", prim==NULL);
-    tPosicion prim = l;
-    //prim = (tPosicion)(l->siguiente);
-    printf("Lleg1\n");
-    tPosicion fin = l_fin(l);
-    printf("Lleg2\n");
-    int q = 0;
-    printf("Lleg3\n");
     while(prim != fin) {
-        printf("While-Lleg4\n");
-        prim = prim->siguiente;
-        printf("While-Lleg5\n");
-        q++;
+        prim = prim->siguiente; // Mientras no termine la lista
+        q++; // Sumo uno
     }
-    printf("Lleg6\n");
     if(l->siguiente != NULL) {
-        printf("IF-Lleg7");
         q++;
     }
 

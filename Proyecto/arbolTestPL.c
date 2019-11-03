@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista.h"
@@ -9,10 +8,10 @@ void fEliminar(tElemento e) {
 }
 
 
-int mainNuestro() {
+int mainArbol() {
     tArbol arbol;
     tNodo raiz = malloc(sizeof(tNodo));
-    int condition = 1, control2 = 0, control1 = 0, index = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0, insertado = 0;
+    int condition = 1, control2 = 0, control1 = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0;
 
     printf("Recuerde crear el arbol antes de utilizar las operaciones.\n\n");
 
@@ -36,11 +35,11 @@ int mainNuestro() {
 
                 if (control1){ //SI SE CREÓ EL ARBOL:
                     printf("Ingrese el valor a agregar: \n");
-                    scanf("%d", &i);
-                    crear_raiz(arbol,i);
+                    scanf("%i", &i);
+                    crear_raiz(arbol,(tElemento) i);
                     raiz = a_raiz(arbol);
                     printf("\nElemento %i agregado con exito.\n\n", i);
-                    printf("\nRaiz: %i\n\n", a_recuperar(arbol, raiz));
+                    printf("\nRaiz: %i\n\n", (int) a_recuperar(arbol, raiz));
                     control2 = 1;
                 }else{
                     printf("Primero debe crear el arbol.\n\n");
@@ -49,14 +48,14 @@ int mainNuestro() {
                 break;
 
             case 3:
-                //-1073741819
+                //-1073741819 el error que nos da siempre
                 printf("\n\n");
 
                 if(control2){
 
                     printf("Padre de donde insertar\n");
                     scanf("%i", &padre);
-                    tNodo p = buscarNodo(arbol, raiz, padre);
+                    tNodo p = buscarNodo(arbol, raiz, (tElemento) padre);
 
                     if(p == NULL){
                         printf("\n\nNo se encontro a %i como padre.\n\n", padre);
@@ -67,9 +66,8 @@ int mainNuestro() {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
-                        a_insertar(arbol, p, NULL, aAgregar);
-                        printf("\nElemento %i agregado con exito1.\n\n", a_recuperar(arbol, l_recuperar(arbol, l_primera(a_hijos(arbol, raiz)))));
-                        insertado = 1;
+                        a_insertar(arbol, p, NULL, (tElemento) aAgregar);
+                        printf("\nElemento %i agregado con exito.\n\n", (int) a_recuperar(arbol, l_recuperar(a_hijos(arbol, raiz), l_primera(a_hijos(arbol, raiz)))));
                         break;
                     }
 
@@ -82,7 +80,7 @@ int mainNuestro() {
 
                     printf("\n\nUsted quiere agregar al nodo %i como hijo de %i y hermano de %i\n\n", aAgregar, padre, hermano);
 
-                    tNodo h = buscarNodo(arbol, raiz, hermano);
+                    tNodo h = buscarNodo(arbol, raiz, (tElemento) hermano);
 
 
                     if(h == NULL){
@@ -90,8 +88,8 @@ int mainNuestro() {
                         break;
                     }
 
-                    a_insertar(arbol, p, h, aAgregar);
-                    printf("\nElemento %i agregado con exito2.\n\n", a_recuperar(arbol, buscarNodo(arbol, raiz, aAgregar)));
+                    a_insertar(arbol, p, h, (tElemento) aAgregar);
+                    printf("\nElemento %i agregado con exito.\n\n", (int) a_recuperar(arbol, buscarNodo(arbol, raiz, (tElemento) aAgregar)));
 
                 } else{
                     printf("Recuerde crear el arbol y su raiz.\n\n");
@@ -112,7 +110,7 @@ int mainNuestro() {
                 scanf("%i", &raizSA);
                 tArbol subArbol;
                 crear_arbol(&subArbol);
-                a_sub_arbol(arbol,buscarNodo(arbol,raiz,raizSA),&subArbol);
+                a_sub_arbol(arbol,buscarNodo(arbol,raiz, (tElemento)raizSA),&subArbol);
 
                 printf("Operación realizada con éxito\n\n");
 
@@ -125,7 +123,7 @@ int mainNuestro() {
                 int x;
                 scanf("%i", &x);
 
-                tNodo nodoElim = buscarNodo(arbol, raiz, x);
+                tNodo nodoElim = buscarNodo(arbol, raiz, (tElemento) x);
 
                 if ( nodoElim == NULL ) {
                     printf("\nNodo no encontrado\n\n");
@@ -136,7 +134,7 @@ int mainNuestro() {
                 raiz = a_raiz(arbol);
                 printf("Nodo eliminado.\n");
                 if(raiz != NULL) {
-                    printf("Nueva raiz: %i\n\n", a_recuperar(arbol, raiz));
+                    printf("Nueva raiz: %i\n\n", (int) a_recuperar(arbol, (tElemento) raiz));
                 } else {
                     control2 = 0;
                 }

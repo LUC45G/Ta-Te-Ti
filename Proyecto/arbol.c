@@ -5,7 +5,6 @@
 
 void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 void Profundidad(tNodo raiz);
-// tPosicion buscarNodo(tNodo raiz, tNodo buscado, tPosicion buscador);
 
 
 void crear_arbol(tArbol *a){
@@ -16,18 +15,12 @@ void crear_arbol(tArbol *a){
         exit(ARB_ERROR_MEMORIA);
     //todos los atributos en nulo
     (*a)->raiz=NULL;
-/*
-    arbol->raiz->elemento = NULL; //ver los -> y .
-    arbol->raiz->hijos = NULL;
-    *a = arbol;*/
 }
 
 void crear_raiz(tArbol a, tElemento e) {
 
-    //if ( a->raiz->elemento != NULL ) exit(ARB_OPERACION_INVALIDA);
     if((a->raiz)!=NULL) exit(ARB_OPERACION_INVALIDA);
     // Creo un nodo auxiliar que sera la raiz
-    //tNodo nodoAux;// = (tNodo)malloc(sizeof(struct nodo));
     a->raiz=(tNodo) malloc(sizeof(struct nodo));
 
     if(a->raiz==NULL) exit(ARB_ERROR_MEMORIA);
@@ -37,15 +30,6 @@ void crear_raiz(tArbol a, tElemento e) {
     a->raiz->elemento = e;
     a->raiz->hijos = listaHijos;
     a->raiz->padre = NULL;
-    // Inicializo el nuevo nodo que sera raiz
-    /*nodoAux->elemento = e;
-    nodoAux->hijos = listaHijos;
-    nodoAux->padre = NULL;
-
-    // Asigno la nueva raiz
-    a->raiz = nodoAux;
-    */
-
 
 }
 
@@ -90,48 +74,6 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
     return nuevo;
 }
 
-/*
-tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){//nh hermano derecho
-        //Creo el nuevo nodo y lo inicializo
-        tNodo nuevo = (tNodo) malloc(sizeof(struct nodo));
-        tLista hijosDeNuevo = (tLista) malloc(sizeof(struct celda));
-        crear_lista(&hijosDeNuevo);
-        nuevo->elemento = e;
-        nuevo->padre = np;
-        nuevo->hijos = hijosDeNuevo;
-        //Hijos del padre del nuevo nodo
-        tLista hijosDePa = np->hijos;
-
-        if (nh == NULL){
-            l_insertar(hijosDePa,l_fin(hijosDePa),(tElemento) nuevo);
-        }else{
-            //Vamos a buscar la posicion del hermano "nh" para agregar al "nuevo"
-            tPosicion primerHijoDePa = l_primera(hijosDePa);
-            tPosicion ultimoHijoDePa = l_fin(hijosDePa);
-            tPosicion nodoHermano;
-            int encontre = 0; //Lo uso para terminar el while siencuentro a nh
-
-            while (primerHijoDePa != ultimoHijoDePa && !encontre){
-                if (l_recuperar(hijosDePa,primerHijoDePa) == nh){ //Si encentro a la posicion de nh:
-                        encontre = 1;
-                        nh = primerHijoDePa;
-                }else{
-                    l_siguiente(hijosDePa,primerHijoDePa);
-                }
-            }
-            //Si cuando sale del while, no encontró a nh entonces es porque el ultimo es nh
-            //Aca podríamos comparar una vez mas y tirar el error si no es == nh
-            if (!encontre){
-                nodoHermano = ultimoHijoDePa;
-            }
-            //Una vez que encontre la posicion de "nh", inserto al "nuevo"
-            l_insertar(hijosDePa,nodoHermano,(tElemento) nuevo);
-        }
-
-        return nuevo;
-
-}
-*/
 
 void f(tElemento e) {}
 
@@ -167,7 +109,7 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
         primerHermano = l_primera(hermanos); // Principio de la lista de hermanos
         ultimoHermano = l_fin(hermanos); // El final de la lista anterior
 
-        while(primerHermano != ultimoHermano) {
+        while(primerHermano != ultimoHermano) { // Se busca al nodo dentro de la lista de hijos del padre
             if(l_recuperar(hermanos, primerHermano) == pa) {
                 paPos = (ultimoHermano = l_primera(hermanos)) ? hermanos : l_anterior(hermanos, ultimoHermano);
                 break;
@@ -179,51 +121,38 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
                 paPos = (ultimoHermano = l_primera(hermanos)) ? hermanos : l_anterior(hermanos, ultimoHermano);
         }
 
-    //borrar al nodo actual con el fEliminar que borre el nodo
-        //borrar la estructura de la lista pero no borrar los nodos
-        //tener cuidado con el centinela en la lista de los hijos
         tNodo hijoNodo;
 
         //Hijo es puntero al primer hijo de la lista
         while( hijo != fin ) { // Agrega todos los hijos a la lista de hermanos
             hijoNodo = l_recuperar(hijos, hijo);
             hijoNodo->padre = padre;
-            l_insertar(hermanos, ultimoHermano, hijoNodo);//ESTABLECER EL NUEVO PADRE
-            //ACTUALIZAR EL PADRE A LOS NODOS HIJOS
-            //tNodo padreDeHijoNodo = hijoNodo->padre;
-            //padreDeHijoNodo = padre;
+            l_insertar(hermanos, ultimoHermano, hijoNodo);
 
             hijo = l_siguiente(hijos, hijo);
             ultimoHermano = l_siguiente(hermanos, ultimoHermano);
         }
-        //printf("LLEGO ");
-
-        //if(!(hijo == hermanos || hijo == fin)) {
         if (hijo != fin){
-          //printf("LLEGO 10");
             hijoNodo = l_recuperar(hijos, hijo);
-          //printf("LLEGO 20");
             hijoNodo->padre = padre;
-          //printf("LLEGO 30");
             l_insertar(hermanos, ultimoHermano, hijoNodo);
-          //printf("LLEGO 40");
         }
         tNodo ultimaInsercion = l_recuperar(hijos, hijo);
         ultimaInsercion->padre = padre;
         l_insertar(hermanos,ultimoHermano,ultimaInsercion);
 
-        // free y cosas, falta buscar papos
+        // free y cosas
 
         l_eliminar(hermanos, paPos, &f);
         l_destruir(&(pa->hijos), &f);
-        //fEliminar(pa->elemento);
+        fEliminar(pa->elemento);
         free(pa);
-        //printf("LLEGO5 \n\n");
     }
 }
 
 
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
+    // Recorre el arbol en post orden y lo elimina poco a poco
     destruirRecursivo(a, fEliminar, (*a)->raiz);
 }
 
@@ -232,72 +161,73 @@ void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n) {
     tPosicion auxPos = l_primera(n->hijos);
     tPosicion fin = l_fin(n->hijos);
 
-    while( auxPos != fin) {
-        destruirRecursivo(a,fEliminar, l_recuperar(n->hijos, auxPos->elemento));
-        auxPos = l_siguiente(n->hijos, auxPos);
+    while( auxPos != fin) { // Por cada hijo
+        destruirRecursivo(a,fEliminar, l_recuperar(n->hijos, auxPos->elemento)); // Repite
+        auxPos = l_siguiente(n->hijos, auxPos); // Y avanza
     }
 
-    a_eliminar(*a, n, fEliminar);
+    a_eliminar(*a, n, fEliminar); // Luego, elimina el nodo
 }
 
 tElemento a_recuperar(tArbol a, tNodo n){
-    return n->elemento;
+    return n->elemento; // Devuelve el elemento
 }
 
 tNodo a_raiz(tArbol a) {
-    return a->raiz;
+    return a->raiz; // Devuelve la raiz
 }
 
 tLista a_hijos(tArbol a, tNodo n){
-    return n->hijos;
+    return n->hijos; // Devuelve la lista de hijos
 }
 
 void MostrarArbol(tArbol arbol, tNodo raiz) {
+    // Este procedimiento solo fue utilizado en nuestro programa de prueba
 
-    tLista hijos  = raiz->hijos;
+    tLista hijos  = raiz->hijos; // Pide la lista de hijos
 
-    if(hijos == NULL)
+    if(hijos == NULL) // Si no tiene hijos, sale porque no tiene nada que mostrar
         return;
 
     tPosicion primer = l_primera(hijos);
     tPosicion fin    = l_fin(hijos);
 
-    Profundidad(raiz);
-    printf("%i\n", (int) raiz->elemento);
+    Profundidad(raiz); // Calcula la profundidad del nodo
+    printf("%i\n", (int) raiz->elemento); // Imprime su elemento, asumiendo que es un entero
 
-    while(primer != hijos && primer != fin) {
-        MostrarArbol(arbol, l_recuperar(hijos, primer));
+    while(primer != hijos && primer != fin) { // Luego por cada hijo
+        MostrarArbol(arbol, l_recuperar(hijos, primer)); // Repite
         primer = l_siguiente(hijos, primer);
     }
 
-    if( primer != hijos )
+    if( primer != hijos ) // Caso especial en que tiene un solo elemento
         MostrarArbol(arbol, l_recuperar(hijos, primer));
 }
 
 void Profundidad(tNodo raiz) {
-    tNodo p = raiz->padre;
+    tNodo p = raiz->padre; // Pide el padre
 
-    while(p!=NULL) {
-        printf("--");
+    while(p!=NULL) { // Mientras el padre no sea nulo, es decir, no haya llegado a la raiz
+        printf("--"); // Imprime dos guiones en representacion a un nivel
         p = p->padre;
     }
 
 }
 
 tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
-    tLista lista = raizActual->hijos;
+    tLista lista = raizActual->hijos; // Pide la lista de hijos
 
-    if(lista == NULL) {
+    if(lista == NULL) { // Si no tiene hijos, sale avisando que no encontro nada
         return NULL;
     }
     if(raizActual->elemento == e) {
-        return raizActual;
+        return raizActual; // Si el elemento actual es el buscado, lo devuelve
     }
 
     tPosicion auxFin = l_fin(lista);
     tPosicion aux = l_primera(lista);
 
-    while ( aux != lista && aux != auxFin) {
+    while ( aux != lista && aux != auxFin) { // Sino, recorre la lista de hijos en busca del nodo
 
         tNodo recursive = buscarNodo(a, l_recuperar(lista, aux), e);
         if(recursive != NULL)
@@ -314,21 +244,23 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
 
 void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si n = a
     //busco al nodo n en a
-    //tNodo raiz = n;
     tNodo raiz = buscarNodo(a, a->raiz, n->elemento);
 
+    // Si no encuentra al nodo, sale
     if(raiz == NULL)
         return;
 
+    // Si el nodo es la raiz, cambia los punteros
     if(raiz->padre == NULL) {
         sa = &a;
         a = NULL;
         return;
     }
 
-    tLista hermanos = raiz->padre->hijos;
+    // Sino, "clona" el arbol
+    tLista hermanos   = raiz->padre->hijos;
     tPosicion primera = l_primera(hermanos);
-    tPosicion fin = l_fin(hermanos);
+    tPosicion fin     = l_fin(hermanos);
 
     while ( primera != NULL && primera != fin ) {
         if ( l_recuperar(hermanos, primera) == n ) {
@@ -338,7 +270,6 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa) { //caso particular para ver si
             nuevaRaiz->padre = NULL;
             n->hijos = NULL;
             (*sa)->raiz = nuevaRaiz;
-            //l_eliminar(hermanos, primera, &fEliminar);
             return;
         }
         primera = l_siguiente(hermanos, primera);

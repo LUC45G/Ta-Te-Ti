@@ -22,6 +22,13 @@ typedef struct arbol * tArbol;
 
 
 /**
+ Operaciones necesarias para nuestro programa de prueba
+*/
+void MostrarArbol(tArbol arbol, tNodo raiz);
+tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e);
+
+
+/**
 Inicializa un árbol vacío.
 Una referencia al árbol creado es referenciado en *A.
 **/

@@ -1,101 +1,219 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "ia.h"
+#include "partida.h"
 
-char fichas [9];
-int turno = 0;
-
-void InicializarFichas() {
-    for(int i = 0; i < 9; i++) {
-        fichas[i] = ' ';
+char GetChar(int x) {
+    if(x == PART_JUGADOR_1) {
+        return 'X';
     }
-}
-
-void ImprimirTablero0() {
-    printf(" %c | %c | %c \n", fichas[0], fichas[1], fichas[2]);
-    printf("---+---+---\n");
-    printf(" %c | %c | %c \n", fichas[3], fichas[4], fichas[5]);
-    printf("---+---+---\n");
-    printf(" %c | %c | %c \n", fichas[6], fichas[7], fichas[8]);
-}
-
-int ColocarFicha(int x, int y, int jugador) {
-
-    system("cls");
-
-    if ( ( fichas[( 3*(y-1) )+ x-1 ] != ' ') || ( ((3*(y-1))+ x-1) > 9 ) ) {
-        ImprimirTablero();
-        return 1;
+    if(x == PART_JUGADOR_2 ) {
+        return 'O';
     }
 
-    fichas[( 3*(y-1) )+ x-1 ] = (jugador == 1) ? 'X' : 'O';
-    turno++;
-    ImprimirTablero();
-    return 0;
+    return ' ';
+}
+
+
+void ImprimirTablero(tTablero t) {
+
+    printf("\n\n\n\n\n");
+
+    printf("\t\t\t %c | %c | %c \n", GetChar(t->grilla[0][0]), GetChar(t->grilla[0][1]), GetChar(t->grilla[0][2]));
+    printf("\t\t\t---+---+---\n");
+    printf("\t\t\t %c | %c | %c \n", GetChar(t->grilla[1][0]), GetChar(t->grilla[1][1]), GetChar(t->grilla[1][2]));
+    printf("\t\t\t---+---+---\n");
+    printf("\t\t\t %c | %c | %c \n", GetChar(t->grilla[2][0]), GetChar(t->grilla[2][1]), GetChar(t->grilla[2][2]));
+
+    printf("\n\n\n");
 
 }
 
-int HayGanador() {
-    int ret = 0, i, j; char aux;
+int ControlVictoria(tTablero tab) {
 
-    for ( i = 1; turno>2 && !ret && i < 8; i++) { // Recorre todas las posiciones excepto la primera y la ultima
+    int i, j;
 
-        for( j = 1; !ret && j < 5; j++) { // recorre de 1 a 4, los rangos en que se puede producir una victoria
-
-            if( j == 2 && i != 4 ) continue; // Casos especiales, tengo que revisar una manera mas clean de evitarlos
-
-            aux = fichas[i]; // guarda la ficha 'central'
-            if ( aux != ' ') ret = fichas[i-j] == aux && aux == fichas[i+j]; // si la ficha es valida, compara sus simetricos.
-                                                                            // Esto puede producir victoria en diagonal, horizontal o vertical
+    // Chequeo por fila
+    for(i = 0; i < 3; ++i) {
+        if(tab->grilla[i][0] == tab->grilla[i][1] && tab->grilla[i][0] == tab->grilla[i][2]) {
+            if(tab->grilla[i][0] == PART_JUGADOR_1) {
+                return PART_GANA_JUGADOR_1;
+            }
+            if(tab->grilla[i][0] == PART_JUGADOR_2) {
+                return PART_GANA_JUGADOR_2;
+            }
         }
     }
 
-    if ( ret ) { // si hay un ganador
-        ret = (fichas[i-1] == 'X') ? 1 : 2; // Devuelve el numero del jugador ganador
-        // printf("error con i: %i y con j: %i", i-1, j-1);
+    // Chequeo por columna
+    for(i = 0; i < 3; ++i) {
+        if(tab->grilla[0][i] == tab->grilla[1][i] && tab->grilla[0][i] == tab->grilla[2][i]) {
+            if(tab->grilla[0][i] == PART_JUGADOR_1) {
+                return PART_GANA_JUGADOR_1;
+            }
+            if(tab->grilla[0][i] == PART_JUGADOR_2) {
+                return PART_GANA_JUGADOR_2;
+            }
+        }
     }
 
-    return ret;
+    // Chequeo por diagonales
+    if(tab->grilla[0][2] == tab->grilla[1][1] && tab->grilla[0][2] == tab->grilla[2][0]) {
+        if(tab->grilla[0][2] == PART_JUGADOR_1) {
+            return PART_GANA_JUGADOR_1;
+        }
+        if(tab->grilla[0][2] == PART_JUGADOR_2) {
+            return PART_GANA_JUGADOR_2;
+        }
+    }
+
+    if(tab->grilla[0][0] == tab->grilla[1][1] && tab->grilla[0][0] == tab->grilla[2][2]) {
+        if(tab->grilla[0][0] == PART_JUGADOR_1) {
+            return PART_GANA_JUGADOR_1;
+        }
+        if(tab->grilla[0][0] == PART_JUGADOR_2) {
+            return PART_GANA_JUGADOR_2;
+        }
+    }
+
+    // Si no gano nadie, se fija si se puede seguir jugando
+    for(i = 0; i < 3; ++i) {
+        for(j = 0; j < 3; ++j) {
+            if(tab->grilla[i][j] == PART_SIN_MOVIMIENTO) {
+                return PART_EN_JUEGO;
+            }
+        }
+    }
+
+    // Si no puede seguir jugando y nadie gano, devuelve empate
+    return PART_EMPATE;
+}
+
+int PedirYRealizarMovimientoJugador(tPartida partida) {
+    int x, y, control;
+    // Imprime el tablero
+    ImprimirTablero(partida->tablero);
+    control = 0;
+    // Avisa de quien es el turno
+    printf("\nTurno de %s\n", (partida->turno_de == PART_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+
+    do {
+        printf("Ingrese su movimiento\n");
+        printf("x: "); scanf("%i", &x);
+        printf("y: "); scanf("%i", &y);
+        // Pide coordenadas x,y
+        // Luego controla si son validas
+        control = ((x>=0) && (x<3)) && ((y>=0) && (y<3));
+    } while ( !control );
+
+    // Cuando son validas, juega
+    return nuevo_movimiento(partida,x,y);
+
+}
+
+int RealizarMovimientoIA(tPartida partida) {
+    tBusquedaAdversaria b;
+    int x, y, auxRet;
+
+    crear_busqueda_adversaria(&b,partida); // Crea la busqueda adversaria
+
+    proximo_movimiento(b,&x,&y); // Calcula el mejor movimiento
+    auxRet = nuevo_movimiento(partida,x,y); // Lo juega
+
+    destruir_busqueda_adversaria(&b); // Destruye la busqueda
+    return auxRet; // Devuelve el valor de utilidad
 }
 
 
+int main() {
+    tPartida partida;
+    char j1[50];
+    char j2[50];
+    int opt, empieza, state = PART_EN_JUEGO;
 
-int mainTATETITOTU() {
-    int x, y, control, winner = 0; // Variables de posicion y control
+    /*PIDO LOS DATOS DE LA PARTIDA*/
 
-    InicializarFichas(); // Inicializa el arreglo de caracteres con ' '
-    ImprimirTablero(); // Imprime el tablero inicialmente vacio
+    while(opt != 1 && opt != 2) {
+        printf("Seleccione modo de juego: \n");
+        printf("1) Humano vs Humano. \n");
+        printf("2) Humano vs IA.\n\n");
 
-    while ( turno < 9 && !winner ) {
-        // La variable de control 'turno' se incrementa en las llamadas a ColocarFicha
-        // La variable de control 'winner' almacena al jugador ganador. En caso de ser 0, es que todavia no gano nadie
+        printf("Ingrese (3) para ver las reglas\n\n");
 
-        if(turno%2) { // Si turno % 2 == 1 significa que es turno del jugador 2
-            do {
-                printf("TURNO: %i \nJugador dos, ingrese coordenadas\n", turno);
-                printf("x: "); scanf("%i", &x);
-                printf("y: "); scanf("%i", &y);
-                control = ColocarFicha(x, y, 2);
-            } while ( control );
-        } else {
-            do {
-                printf("TURNO: %i \nJugador uno, ingrese coordenadas\n", turno);
-                printf("x: "); scanf("%i", &x);
-                printf("y: "); scanf("%i", &y);
-                control = ColocarFicha(x, y, 1);
-            } while ( control ); // Pide coordenadas al jugador y cicla hasta que las coordenadas sean validas
+        scanf("%d", &opt);
+
+        if(opt == 3) {
+            printf("\n\n\n\n\n");
+            printf("\t\t\t  Bienvenidx al TaTeTi\n");
+            printf("Primero seleccione un modo de juego: \n");
+            printf("Humano vs Humano: Permite jugar el clasico TaTeTi uno contra uno\n");
+            printf("Humano vs IA: Permite desafiar a una mega avanzada inteligencia artificial\n");
+            printf("\nLas celdas del tablero son:\n\n");
+
+            printf("\t\t\t [0, 0] | [0, 1] | [0, 2] \n");
+            printf("\t\t\t--------+--------+--------\n");
+            printf("\t\t\t [1, 0] | [1, 1] | [1, 2] \n");
+            printf("\t\t\t--------+--------+--------\n");
+            printf("\t\t\t [2, 0] | [2, 1] | [2, 2] \n");
+
+            printf("\nSeleccione un par [x, y] para colocar la ficha deseada y ceda el turno al siguiente jugador.\n\n");
+
+            printf("\t\t\t\tGL HF!\n\n\n\n\n");
         }
-
-        winner = HayGanador();
     }
 
-    if(winner) {
-        printf("\n\n\nEL GANADOR ES EL JUGADOR %i!!!", winner);
+    printf("Ingrese nombre del jugador 1: ");
+    scanf("%50s", j1);
+
+    printf("Ingrese nombre del jugador 2: ");
+    scanf("%50s", j2);
+
+    printf("Empieza jugador 1 o 2? ");
+    scanf("%i", &empieza);
+
+    nueva_partida(&partida, opt, empieza, j1, j2);
+
+
+    /*JUEGO*/
+
+    switch(opt) {
+
+        case 1:
+            /*MODO JUGADOR VS JUGADOR*/
+            // Mientras el movimiento sea valido y la partida no haya terminado
+            while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
+                state = PedirYRealizarMovimientoJugador(partida); // Jugar
+            }
+            break;
+
+        case 2:
+            /*MODO JUGADOR VS PC*/
+            // Mientras el movimiento sea valido y la partida no haya terminado
+            while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
+                // Si es turno del humano, pedir datos y jugar
+                if(partida->turno_de == PART_JUGADOR_1) {
+                    state = PedirYRealizarMovimientoJugador(partida);
+                }
+                else { // Caso contrario, calcular movimiento de la IA
+                    state = RealizarMovimientoIA(partida);
+                }
+            }
+            break;
+        default:
+            exit(0);
+
+    }
+
+    ImprimirTablero(partida->tablero);
+
+    if(state == PART_EMPATE) {
+        // Si termina en empate, avisa
+        printf("\n\n\t\t\tEMPATE\n\n");
     }
     else {
-        printf("\n\n\nHAY EMPATE!!!");
+        // Caso contrario, alguien gano y tambien avisa
+        printf("\n\n\t\t\tGANADOR: %s\n\n", (state == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
     }
-
-
 
     return 0;
 }
