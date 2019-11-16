@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ia.h"
 #include "partida.h"
 
 void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombre, char * j2_nombre) {
@@ -50,6 +49,11 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y) {
 
+    if (mov_x < 0 || mov_x > 2 ||
+        mov_y < 0 || mov_y > 2  ) {
+        return PART_MOVIMIENTO_ERROR;
+    }
+
     // Si la casilla esta ocupada, avisa
     if(p->tablero->grilla[mov_x][mov_y] != PART_SIN_MOVIMIENTO) {
         return PART_MOVIMIENTO_ERROR;
@@ -59,10 +63,12 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y) {
     p->tablero->grilla[mov_x][mov_y] = p->turno_de;
     p->turno_de = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
 
-    // Devuelve el estado de la partida
-    return ControlVictoria(p->tablero);
+    return PART_MOVIMIENTO_OK;
 }
 
 void finalizar_partida(tPartida * p) {
-
+    while(*p != NULL) {
+        free((*p)->tablero);
+        free(p);
+    }
 }

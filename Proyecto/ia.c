@@ -12,6 +12,8 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
+void f_no_eliminar(void * nada){}
+
 static int max(int a, int b) {
     // Calcula el maximo entre a y b
     return (((a) > (b)) ? (a) : (b));
@@ -22,10 +24,10 @@ static int min(int a, int b) {
     return (((a) < (b)) ? (a) : (b));
 }
 
-void fEliminarBusqueda(void * estado){
+void fEliminarBusqueda(tElemento e){
+    tEstado aux=(tEstado)e;
     // liberador de estados
-    free(estado);
-    estado = NULL;
+    free(aux);
 }
 
 void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
@@ -38,7 +40,7 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     estado = (tEstado) malloc(sizeof(struct estado));
     if (estado == NULL) exit(IA_ERROR_MEMORIA);
 
-    // Se clona el estado del tablero de la partida, al estado inicial de la búsqueda adversaria.
+    // Se clona el estado del tablero de la partida, al estado inicial de la bï¿½squeda adversaria.
     for(i=0; i<3; i++){
         for(j=0; j<3; j++){
             estado->grilla[i][j] = p->tablero->grilla[i][j];
@@ -49,14 +51,14 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
 	// inicialmente es IA_NO_TERMINO
     estado->utilidad = IA_NO_TERMINO;
 
-    // Inicializa los valores que representarán a los jugadores MAX y MIN respectivamente.
+    // Inicializa los valores que representarï¿½n a los jugadores MAX y MIN respectivamente.
     (*b)->jugador_max = p->turno_de;
     (*b)->jugador_min = (p->turno_de == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
 
-    // Inicializa un árbol para la búsqueda adversaria inicialmente vacío.
+    // Inicializa un ï¿½rbol para la bï¿½squeda adversaria inicialmente vacï¿½o.
     crear_arbol(&((*b)->arbol_busqueda));
 
-    // Inicializa la raíz del árbol de búsqueda con el estado del tablero T.
+    // Inicializa la raï¿½z del ï¿½rbol de bï¿½squeda con el estado del tablero T.
     crear_raiz((*b)->arbol_busqueda, estado);
 
     // Ejecuta algoritmo Min-Max con podas Alpha-Beta.
@@ -135,8 +137,8 @@ void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
 // ===============================================================================================================
 
 /**
-Ordena la ejecución del algoritmo Min-Max para la generación del árbol de búsqueda adversaria, considerando como
-estado inicial el estado de la partida almacenado en el árbol almacenado en B.
+Ordena la ejecuciï¿½n del algoritmo Min-Max para la generaciï¿½n del ï¿½rbol de bï¿½squeda adversaria, considerando como
+estado inicial el estado de la partida almacenado en el ï¿½rbol almacenado en B.
 **/
 static void ejecutar_min_max(tBusquedaAdversaria b){
     tArbol a = b->arbol_busqueda;
@@ -150,10 +152,10 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir del estado almacenado en N.
-- A referencia al árbol de búsqueda adversaria.
-- N referencia al nodo a partir del cual se construye el subárbol de búsqueda adversaria.
-- ES_MAX indica si N representa un nodo MAX en el árbol de búsqueda adversaria.
-- ALPHA y BETA indican sendos valores correspondientes a los nodos ancestros a N en el árbol de búsqueda A.
+- A referencia al ï¿½rbol de bï¿½squeda adversaria.
+- N referencia al nodo a partir del cual se construye el subï¿½rbol de bï¿½squeda adversaria.
+- ES_MAX indica si N representa un nodo MAX en el ï¿½rbol de bï¿½squeda adversaria.
+- ALPHA y BETA indican sendos valores correspondientes a los nodos ancestros a N en el ï¿½rbol de bï¿½squeda A.
 - JUGADOR_MAX y JUGADOR_MIN indican las fichas con las que juegan los respectivos jugadores.
 **/
 
@@ -234,9 +236,9 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 Computa el valor de utilidad correspondiente al estado E, y la ficha correspondiente al JUGADOR_MAX, retornado:
-- IA_GANA_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX ganó la partida.
-- IA_EMPATA_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX empató la partida.
-- IA_PIERDE_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX perdió la partida.
+- IA_GANA_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX ganï¿½ la partida.
+- IA_EMPATA_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX empatï¿½ la partida.
+- IA_PIERDE_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX perdiï¿½ la partida.
 - IA_NO_TERMINO en caso contrario.
 **/
 static int valor_utilidad(tEstado e, int jugador_max) {
@@ -311,10 +313,10 @@ static int valor_utilidad(tEstado e, int jugador_max) {
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
-Un estado sucesor corresponde a la clonación del estado E, junto con la incorporación de un nuevo movimiento
-realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posición que se encuentra libre en el estado E.
-La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocación de la función
-estados_sucesores(estado, ficha) retornaría dos listas L1 y L2 tal que:
+Un estado sucesor corresponde a la clonaciï¿½n del estado E, junto con la incorporaciï¿½n de un nuevo movimiento
+realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posiciï¿½n que se encuentra libre en el estado E.
+La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocaciï¿½n de la funciï¿½n
+estados_sucesores(estado, ficha) retornarï¿½a dos listas L1 y L2 tal que:
 - L1 y L2 tienen exactamente los mismos estados sucesores de ESTADO a partir de jugar FICHA.
 - El orden de los estado en L1 posiblemente sea diferente al orden de los estados en L2.
 **/
@@ -329,14 +331,13 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador) {
         for(j = 0; j < 3; ++j) {
             if(e->grilla[i][j] == PART_SIN_MOVIMIENTO) {                                // Si el par [i, j] actual esta libre
                 sigEstado = clonar_estado(e);                                           // Clono el estado
-                sigEstado->grilla[i][j] = ficha_jugador;                                // Agrego la ficha pertinente
-                sigEstado->utilidad     = valor_utilidad(sigEstado, ficha_jugador);     // Calculo su valor de utilidad
+                sigEstado->grilla[i][j] = ficha_jugador;
 
-                if ((int) &sigEstado % 3 == 0) {                                              // Si su puntero es divisible por 3
+                if ( rand() % 3 == 0) {                                                 // Si su puntero es divisible por 3
                     l_insertar(listaReturn, listaReturn, sigEstado);                    // Lo coloco al principio
                 }
                 else {                                                                  // Sino
-                    l_insertar(listaReturn, l_fin(listaReturn), sigEstado);             // Lo coloco al final
+                    l_insertar(listaReturn, l_ultima(listaReturn), sigEstado);             // Lo coloco al final
                 }                                                                       // Esto le da la aleatoriedad
             }
         }
@@ -348,12 +349,13 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador) {
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
-Inicializa y retorna un nuevo estado que resulta de la clonación del estado E.
+Inicializa y retorna un nuevo estado que resulta de la clonaciï¿½n del estado E.
 Para esto copia en el estado a retornar los valores actuales de la grilla del estado E, como su valor
 de utilidad.
 **/
 static tEstado clonar_estado(tEstado e) {
     tEstado newE = malloc(sizeof(struct estado));
+    if(newE == NULL) { exit(IA_ERROR_MEMORIA); }
     int i, j;
 
     for(i = 0; i < 3; ++i) {
@@ -362,13 +364,15 @@ static tEstado clonar_estado(tEstado e) {
         }
     }
 
+    newE->utilidad = e->utilidad;
+
     return newE;
 }
 
 /**
 Computa la diferencia existente entre dos estados.
-Se asume que entre ambos existe sólo una posición en el que la ficha del estado anterior y nuevo difiere.
-La posición en la que los estados difiere, es retornada en los parámetros *X e *Y.
+Se asume que entre ambos existe sï¿½lo una posiciï¿½n en el que la ficha del estado anterior y nuevo difiere.
+La posiciï¿½n en la que los estados difiere, es retornada en los parï¿½metros *X e *Y.
 **/
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y){
     int i,j, hallado = 0;

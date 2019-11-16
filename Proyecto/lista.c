@@ -7,32 +7,16 @@
 
 void crear_lista(tLista * l){
     // Crea una lista con el nodo centinela, elemento nulo y siguiente nulo (esta vacia)
-    /*
-    printf("Crear_Lista\n");
-    tLista header = (tLista) malloc(sizeof(struct celda));
-    if (header == NULL) exit(LST_ERROR_MEMORIA);
-    printf("Lleg0");
 
-    header->siguiente = NULL;
-    printf("Lleg1");
-
-    header->elemento = NULL;
-    printf("Lleg2");
-    *l = header;
-    printf("Lleg3");
-*/
-    void crear_lista(tLista* l){
     ///Asigno memoria.
     *l=(tLista) malloc(sizeof(struct celda));
+
     ///Si la memoria no se asigno produce un error.
     if(*l==NULL)
         exit(LST_ERROR_MEMORIA);
 
     (*l) -> elemento=NULL; ///elemento nulo.
     (*l) -> siguiente=NULL; ///el puntero al sig elemento es nulo.
-
-}
-
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e) {
@@ -57,27 +41,30 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 }
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
-    tPosicion aux = *l, auxAnterior;
-    while (aux->siguiente != NULL ){ // Por cada elemento dentro de la lista
-        fEliminar( (tElemento) aux->elemento); // Lo elimina con la funcion previa
-        auxAnterior = aux;
-        aux = l_siguiente(*l, aux); // Movimiento de punteros
-        free(auxAnterior); // Liberación de memoria
+    tPosicion aux, auxAnterior;
+    int finish;
+
+    while(!finish) {
+        aux = *l;
+        while (aux->siguiente != NULL ) { // Por cada elemento dentro de la lista
+            fEliminar( (tElemento) aux->elemento); // Lo elimina con la funcion previa
+            auxAnterior = aux;
+            aux = l_siguiente(*l, aux); // Movimiento de punteros
+            free(auxAnterior); // Liberaciï¿½n de memoria
+        }
+        finish = *l != NULL;
     }
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
-    if ( p == NULL) exit(LST_POSICION_INVALIDA); // Si la posicion es nula, salir
-    if ( p->elemento == NULL ) exit(LST_ELEMENTO_NULO); // Si es el centinela, salir
-    return p->elemento; // Si no, devuelvo el elemento
+    if ( p->siguiente == NULL) exit(LST_POSICION_INVALIDA); // Si la posicion es nula, salir
+    if ( (p->siguiente)->elemento == NULL ) exit(LST_ELEMENTO_NULO); // Si es el centinela, salir
+    return (p->siguiente)->elemento; // Si no, devuelvo el elemento
 }
 
 
 tPosicion l_primera(tLista l) {
-    if(l->siguiente == NULL) // Si la lista esta vacia
-        return l; // Devuelvo el centinela
-
-    return l->siguiente; // Sino, devuelvo el siguiente al centinela
+    return l; // Sino, devuelvo el siguiente al centinela
 }
 
 tPosicion l_siguiente(tLista l, tPosicion p) {
@@ -89,7 +76,7 @@ tPosicion l_siguiente(tLista l, tPosicion p) {
 tPosicion l_anterior(tLista l, tPosicion p) {
     tPosicion aux = l; // Nodo de control
 
-    if ( p == l->siguiente) exit(LST_NO_EXISTE_ANTERIOR); // Si se le pide el anterior al primer elemento, salir
+    if ( p == l) exit(LST_NO_EXISTE_ANTERIOR); // Si se le pide el anterior al primer elemento, salir
 
     // Busco el anterior a p
     while( aux->siguiente != NULL && aux->siguiente != p ) {
@@ -127,15 +114,11 @@ tPosicion l_fin(tLista l) {
 }
 
 int l_longitud(tLista l) {
-    tPosicion prim = l; // Guardo el primero
-    tPosicion fin = l_fin(l); // Guardo el ultimo
     int q = 0; // Contador
+    tPosicion aux = l;
 
-    while(prim != fin) {
-        prim = prim->siguiente; // Mientras no termine la lista
-        q++; // Sumo uno
-    }
-    if(l->siguiente != NULL) {
+    while( aux->siguiente != NULL ) {
+        aux = aux->siguiente;
         q++;
     }
 
