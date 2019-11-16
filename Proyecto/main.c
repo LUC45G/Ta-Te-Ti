@@ -28,66 +28,66 @@ void ImprimirTablero(tTablero t) {
     printf("\n\n\n");
 
 }
-//
-//int ControlVictoria(tTablero tab) {
-//
-//    int i, j;
-//
-//    // Chequeo por fila
-//    for(i = 0; i < 3; ++i) {
-//        if(tab->grilla[i][0] == tab->grilla[i][1] && tab->grilla[i][0] == tab->grilla[i][2]) {
-//            if(tab->grilla[i][0] == PART_JUGADOR_1) {
-//                return PART_GANA_JUGADOR_1;
-//            }
-//            if(tab->grilla[i][0] == PART_JUGADOR_2) {
-//                return PART_GANA_JUGADOR_2;
-//            }
-//        }
-//    }
-//
-//    // Chequeo por columna
-//    for(i = 0; i < 3; ++i) {
-//        if(tab->grilla[0][i] == tab->grilla[1][i] && tab->grilla[0][i] == tab->grilla[2][i]) {
-//            if(tab->grilla[0][i] == PART_JUGADOR_1) {
-//                return PART_GANA_JUGADOR_1;
-//            }
-//            if(tab->grilla[0][i] == PART_JUGADOR_2) {
-//                return PART_GANA_JUGADOR_2;
-//            }
-//        }
-//    }
-//
-//    // Chequeo por diagonales
-//    if(tab->grilla[0][2] == tab->grilla[1][1] && tab->grilla[0][2] == tab->grilla[2][0]) {
-//        if(tab->grilla[0][2] == PART_JUGADOR_1) {
-//            return PART_GANA_JUGADOR_1;
-//        }
-//        if(tab->grilla[0][2] == PART_JUGADOR_2) {
-//            return PART_GANA_JUGADOR_2;
-//        }
-//    }
-//
-//    if(tab->grilla[0][0] == tab->grilla[1][1] && tab->grilla[0][0] == tab->grilla[2][2]) {
-//        if(tab->grilla[0][0] == PART_JUGADOR_1) {
-//            return PART_GANA_JUGADOR_1;
-//        }
-//        if(tab->grilla[0][0] == PART_JUGADOR_2) {
-//            return PART_GANA_JUGADOR_2;
-//        }
-//    }
-//
-//    // Si no gano nadie, se fija si se puede seguir jugando
-//    for(i = 0; i < 3; ++i) {
-//        for(j = 0; j < 3; ++j) {
-//            if(tab->grilla[i][j] == PART_SIN_MOVIMIENTO) {
-//                return PART_EN_JUEGO;
-//            }
-//        }
-//    }
-//
-//    // Si no puede seguir jugando y nadie gano, devuelve empate
-//    return PART_EMPATE;
-//}
+
+int ControlVictoria(tTablero tab) {
+
+    int i, j;
+
+    // Chequeo por fila
+    for(i = 0; i < 3; ++i) {
+        if(tab->grilla[i][0] == tab->grilla[i][1] && tab->grilla[i][0] == tab->grilla[i][2]) {
+            if(tab->grilla[i][0] == PART_JUGADOR_1) {
+                return PART_GANA_JUGADOR_1;
+            }
+            if(tab->grilla[i][0] == PART_JUGADOR_2) {
+                return PART_GANA_JUGADOR_2;
+            }
+        }
+    }
+
+    // Chequeo por columna
+    for(i = 0; i < 3; ++i) {
+        if(tab->grilla[0][i] == tab->grilla[1][i] && tab->grilla[0][i] == tab->grilla[2][i]) {
+            if(tab->grilla[0][i] == PART_JUGADOR_1) {
+                return PART_GANA_JUGADOR_1;
+            }
+            if(tab->grilla[0][i] == PART_JUGADOR_2) {
+                return PART_GANA_JUGADOR_2;
+            }
+        }
+    }
+
+    // Chequeo por diagonales
+    if(tab->grilla[0][2] == tab->grilla[1][1] && tab->grilla[0][2] == tab->grilla[2][0]) {
+        if(tab->grilla[0][2] == PART_JUGADOR_1) {
+            return PART_GANA_JUGADOR_1;
+        }
+        if(tab->grilla[0][2] == PART_JUGADOR_2) {
+            return PART_GANA_JUGADOR_2;
+        }
+    }
+
+    if(tab->grilla[0][0] == tab->grilla[1][1] && tab->grilla[0][0] == tab->grilla[2][2]) {
+        if(tab->grilla[0][0] == PART_JUGADOR_1) {
+            return PART_GANA_JUGADOR_1;
+        }
+        if(tab->grilla[0][0] == PART_JUGADOR_2) {
+            return PART_GANA_JUGADOR_2;
+        }
+    }
+
+    // Si no gano nadie, se fija si se puede seguir jugando
+    for(i = 0; i < 3; ++i) {
+        for(j = 0; j < 3; ++j) {
+            if(tab->grilla[i][j] == PART_SIN_MOVIMIENTO) {
+                return PART_EN_JUEGO;
+            }
+        }
+    }
+
+    // Si no puede seguir jugando y nadie gano, devuelve empate
+    return PART_EMPATE;
+}
 
 int PedirYRealizarMovimientoJugador(tPartida partida) {
     int x, y, control;
@@ -129,7 +129,7 @@ int main() {
     tPartida partida;
     char j1[50];
     char j2[50];
-    int opt = 0, empieza = 0, state = PART_MOVIMIENTO_OK, i = 0;
+    int opt = 0, empieza = 0, state = PART_MOVIMIENTO_OK, i = 0, termino = 0;
 
     for (i = 0; i < 50; i++) {
         j1[i] = '\0';
@@ -176,7 +176,7 @@ int main() {
     printf("Quien empieza? \n1- Jugador 1 \n2- Jugador 2\n3- Random\n\n");
     scanf("%i", &empieza);
 
-    if(empieza = 3) {
+    if(empieza == 3) {
         empieza = (rand()%2) + 1;
     }
 
@@ -190,15 +190,17 @@ int main() {
         case 1:
             /*MODO JUGADOR VS JUGADOR*/
             // Mientras el movimiento sea valido y la partida no haya terminado
-            while(state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) {
+            while((state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) && !termino) {
                 state = PedirYRealizarMovimientoJugador(partida); // Jugar
+                termino = ControlVictoria(partida->tablero) != PART_EN_JUEGO;
             }
+
             break;
 
         case 2:
             /*MODO JUGADOR VS PC*/
             // Mientras el movimiento sea valido y la partida no haya terminado
-            while(state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) {
+            while((state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) && !termino) {
                 // Si es turno del humano, pedir datos y jugar
                 if(partida->turno_de == PART_JUGADOR_1) {
                     state = PedirYRealizarMovimientoJugador(partida);
@@ -206,6 +208,8 @@ int main() {
                 else { // Caso contrario, calcular movimiento de la IA
                     state = RealizarMovimientoIA(partida);
                 }
+
+                termino = ControlVictoria(partida->tablero) != PART_EN_JUEGO;
             }
             break;
         default:
@@ -222,7 +226,7 @@ int main() {
     }
     else {
         // Caso contrario, alguien gano y tambien avisa
-        printf("\n\n\t\t\tGANADOR: %s\n\n", (state == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+        printf("\n\n\t\t\tGANADOR: %s\n\n", (termino == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
     }
 
     return 0;
