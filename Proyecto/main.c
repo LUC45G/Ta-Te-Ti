@@ -129,7 +129,7 @@ int main() {
     tPartida partida;
     char j1[50];
     char j2[50];
-    int opt = 0, empieza = 0, state = PART_EN_JUEGO, i = 0;
+    int opt = 0, empieza = 0, state = PART_MOVIMIENTO_OK, i = 0;
 
     for (i = 0; i < 50; i++) {
         j1[i] = '\0';
@@ -190,7 +190,7 @@ int main() {
         case 1:
             /*MODO JUGADOR VS JUGADOR*/
             // Mientras el movimiento sea valido y la partida no haya terminado
-            while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
+            while(state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) {
                 state = PedirYRealizarMovimientoJugador(partida); // Jugar
             }
             break;
@@ -198,7 +198,7 @@ int main() {
         case 2:
             /*MODO JUGADOR VS PC*/
             // Mientras el movimiento sea valido y la partida no haya terminado
-            while(state == PART_EN_JUEGO || state == PART_MOVIMIENTO_ERROR) {
+            while(state == PART_MOVIMIENTO_OK || state == PART_MOVIMIENTO_ERROR) {
                 // Si es turno del humano, pedir datos y jugar
                 if(partida->turno_de == PART_JUGADOR_1) {
                     state = PedirYRealizarMovimientoJugador(partida);

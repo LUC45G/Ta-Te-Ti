@@ -28,6 +28,11 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
     // Leo los nombres
     int i = 0;
 
+    for(i = 0; i < 50; i++) {
+        (*p)->nombre_jugador_1[i] = '\0';
+        (*p)->nombre_jugador_2[i] = '\0';
+    }
+
     while(j1_nombre[i] != '\n' && j1_nombre[i] != '\0') {
         (*p)->nombre_jugador_1[i] = j1_nombre[i];
         i++;

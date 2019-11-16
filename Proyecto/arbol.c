@@ -5,6 +5,8 @@
 
 void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo  n);
 void Profundidad(tNodo raiz);
+void (*fEliminarParaDestruir) (tElemento);
+void fEliminarLocal(tElemento e);
 
 
 void crear_arbol(tArbol *a){
@@ -155,21 +157,28 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
     // Recorre el arbol en post orden y lo elimina poco a poco
-    destruirRecursivo(a, fEliminar, (*a)->raiz);
+//    destruirRecursivo(a, fEliminar, (*a)->raiz);
+    fEliminarParaDestruir = fEliminar;
+    l_destruir(&((*a)->raiz->hijos), &fEliminarLocal);
+
+    fEliminar((*a)->raiz->elemento);
+    (*a)->raiz->elemento = NULL;
+
+    free((*a)->raiz);
+    (*a)->raiz = NULL;
+
+    free(*a);
+    a = NULL;
+    fEliminarParaDestruir = NULL;
 }
 
-void destruirRecursivo(tArbol * a, void (*fEliminar)(tElemento), tNodo n) {
-
-    tPosicion auxPos = n->hijos;
-    int length = l_longitud(n->hijos);
-
-    while( length > 0 ) { // Por cada hijo
-        destruirRecursivo(a,fEliminar, l_recuperar(n->hijos, auxPos->elemento)); // Repite
-        auxPos = l_siguiente(n->hijos, auxPos); // Y avanza
-        length--;
-    }
-
-    a_eliminar(*a, n, fEliminar); // Luego, elimina el nodo
+void fEliminarLocal(tElemento e) {
+    tNodo nodoABorrar = (tNodo) e;
+    l_destruir(&nodoABorrar->hijos, &fEliminarLocal);
+    fEliminarParaDestruir(nodoABorrar->elemento);
+    nodoABorrar->elemento = NULL;
+    nodoABorrar->padre = NULL;
+    free(nodoABorrar);
 }
 
 tElemento a_recuperar(tArbol a, tNodo n){

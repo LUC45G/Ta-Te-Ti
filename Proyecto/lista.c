@@ -32,7 +32,9 @@ void l_insertar(tLista l, tPosicion p, tElemento e) {
 
 void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 
-    if ( p == l_fin(l) ) exit(LST_POSICION_INVALIDA);
+    if ( p == l_fin(l) ) {
+        exit(LST_POSICION_INVALIDA);
+    }
 
     tPosicion aux = p->siguiente; // Nodo auxiliar, almacena el nodo a eliminar
     p->siguiente = aux->siguiente; // Mueve el puntero al lugar deseado
@@ -57,7 +59,9 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
-    if ( p->siguiente == NULL) exit(LST_POSICION_INVALIDA); // Si la posicion es nula, salir
+    if ( p->siguiente == NULL) {
+        exit(LST_POSICION_INVALIDA); // Si la posicion es nula, salir
+    }
     if ( (p->siguiente)->elemento == NULL ) exit(LST_ELEMENTO_NULO); // Si es el centinela, salir
     return (p->siguiente)->elemento; // Si no, devuelvo el elemento
 }
@@ -93,10 +97,9 @@ tPosicion l_anterior(tLista l, tPosicion p) {
 
 tPosicion l_ultima(tLista l) {
     tPosicion aux = l;
-    tPosicion finAux = l_fin(l);
 
     // La posicion que apunta al ultimo elemento es aquella que apunta al que apunta al final.
-    while( aux->siguiente != finAux ) {
+    while( aux->siguiente != NULL && (aux->siguiente)->siguiente != NULL ) {
         aux = aux->siguiente;
     }
 

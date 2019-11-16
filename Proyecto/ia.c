@@ -159,7 +159,7 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 - JUGADOR_MAX y JUGADOR_MIN indican las fichas con las que juegan los respectivos jugadores.
 **/
 
-static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
+static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) { /*
 
     // Si es un nodo terminal
     if ( valor_utilidad(a_recuperar(a,n), (es_max)?jugador_max:jugador_min) != IA_NO_TERMINO) {
@@ -229,8 +229,81 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
         ((tEstado)a_recuperar(a, n))->utilidad = beta;
     }
 
+    l_destruir(&sucesores,f_no_eliminar);*/
 
+    ///Guardo en una variable auxiliar el elemento del nodo encontrado en el arbol y el nodo pasados por paramentro.
+    ///Ejecuto la funcion minimax pasando por parametro el elemento del nodo anteriormente guardado,el entero que identifica al jugador y dos variables que identifican el valor de utilidad.
+    ///Declaracion de variables.
+    tEstado estado=n->elemento;
+    tLista sucesores;
+    tPosicion posActualSucesores;
+    tPosicion finSucesores;
+    tEstado sucesorAct;
+    int encontro = 0;
 
+    ///Si es un estado final devuelve la utilidad.
+    estado->utilidad=valor_utilidad(estado,jugador_max);
+    if(estado->utilidad==IA_NO_TERMINO){
+        ///Si esJugadorMax !=0 significa que es un estado max.
+        if(es_max){
+            ///Inicializo las variables.
+            sucesores = estados_sucesores(estado,jugador_max);
+            posActualSucesores = l_primera(sucesores);
+            finSucesores = l_fin(sucesores);
+            ///Exploro la lista de estados hijos del estado actual.
+            while(posActualSucesores!=finSucesores&&!encontro){
+                ///Recupero el estado de la posicion de la lista de hijos.
+                sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
+                ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado min.
+                sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
+                tNodo hijoActual = a_insertar(a,n,NULL,sucesorAct);
+                crear_sucesores_min_max(a,hijoActual,0,alpha,beta,jugador_max,jugador_min);//Este esta bien.Creo, le paso 0 para que vaya al else.
+                ///Si la utilidad del hijo es mayor a la anteriormente calculada la reemplazo por el nuevo valor.
+                tEstado estadoSucesor = hijoActual->elemento;
+                //if(estadoSucesor->utilidad<mejorValorSucesores)
+                //    mejorValorSucesores= caca->utilidad;
+                ///Si alpha es menor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
+                if(alpha<estadoSucesor->utilidad)
+                    alpha = estadoSucesor->utilidad;
+                ///Si beta es menor  o igual a alpha, podo.
+                if(beta<=alpha){
+                    encontro = 1;
+                }
+                ///Actualizo la posicion en la lista de hijos.
+                posActualSucesores = l_siguiente(sucesores,posActualSucesores);
+            }
+            estado->utilidad = alpha;
+        }
+            ///Si esJugadorMax =0 significa que es un estado min.
+        else{
+            ///Inicializo las variables.
+            sucesores = estados_sucesores(estado,jugador_min);
+            posActualSucesores = l_primera(sucesores);
+            finSucesores = l_fin(sucesores);
+            ///Exploro la lista de estados hijos del estado actual.
+            while(posActualSucesores!=finSucesores&&!encontro){
+                ///Recupero el estado de la posicion de la lista de hijos.
+                sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
+                ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado max.
+                tNodo hijoActual =a_insertar(a,n,NULL,sucesorAct);
+                sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
+                crear_sucesores_min_max(a,hijoActual,1,alpha,beta,jugador_max,jugador_min);//Este le paso para que en el sig vaya al if y no al else
+                ///Si la utilidad del hijo es menor a la anteriormente calculada la reemplazo por el nuevo valor.
+                tEstado estadoSucesor=hijoActual->elemento;
+                ///Si beta es mayor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
+                if(estadoSucesor->utilidad<beta)
+                    beta = estadoSucesor->utilidad;
+                ///Si beta es menor  o igual a alpha, podo.
+                if(beta<=alpha){
+                    encontro = 1;
+                }
+                ///Actualizo la posicion en la lista de hijos.
+                posActualSucesores = l_siguiente(sucesores,posActualSucesores);
+            }
+            estado->utilidad = beta;
+        }
+        l_destruir(&sucesores,f_no_eliminar);
+    }
 }
 
 /**
