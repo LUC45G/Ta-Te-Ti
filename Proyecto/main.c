@@ -95,7 +95,7 @@ int PedirYRealizarMovimientoJugador(tPartida partida) {
     ImprimirTablero(partida->tablero);
     control = 0;
     // Avisa de quien es el turno
-    printf("\nTurno de %s\n", (partida->turno_de == PART_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+    printf("\nTurno de %s\n", (partida->turno_de == PART_JUGADOR_1) ? "las X" : "los O");
 
     do {
         printf("Ingrese su movimiento\n");
@@ -218,15 +218,17 @@ int main() {
 
     }
 
+    termino = ControlVictoria(partida->tablero);
+
     ImprimirTablero(partida->tablero);
 
-    if(state == PART_EMPATE) {
+    if(termino == PART_EMPATE) {
         // Si termina en empate, avisa
         printf("\n\n\t\t\tEMPATE\n\n");
     }
     else {
         // Caso contrario, alguien gano y tambien avisa
-        printf("\n\n\t\t\tGANADOR: %s\n\n", (termino == PART_GANA_JUGADOR_1) ? partida->nombre_jugador_1 : partida->nombre_jugador_2);
+        printf("\n\n\t\t\tGANADOR: %s\n\n", (termino == PART_GANA_JUGADOR_1) ? "las X" : "los O");
     }
 
     return 0;

@@ -6,7 +6,7 @@ void fEliminarLista(tElemento e) {
     free(e);
 }
 
-int mainListTester() {
+int mainLista() {
     tLista list;
     tPosicion auxInsert, auxMostrar, auxFin;
 
@@ -23,7 +23,6 @@ int mainListTester() {
 
         switch(condition) {
             case 1:
-                system("cls");  //limpia la pantalla
 
                 crear_lista(&list);
                 auxInsert = list;
@@ -35,7 +34,6 @@ int mainListTester() {
                 break;
 
             case 2:
-                system("cls");
                 if (control1){
                     printf("Ingrese el valor a agregar: \n");
                     scanf("%i", &i);
@@ -50,14 +48,12 @@ int mainListTester() {
                 break;
 
             case 3:
-
-                system("cls");
                 if(control2){
-                    auxMostrar = l_siguiente(list, list);
-                    auxFin = l_fin(list);
+                    auxMostrar = list;
+                    int fin = l_longitud(list);
                     index = 1;
 
-                    while( auxMostrar != auxFin ) { // Cambiar por bandera en el final, e iterar mientras auxMostrar != bandera
+                    while( index < fin ) {
                         printf("Elemento %i: %i\n\n", index++, (int) l_recuperar(list, auxMostrar) );
                         auxMostrar = l_siguiente(list, auxMostrar);
                     }

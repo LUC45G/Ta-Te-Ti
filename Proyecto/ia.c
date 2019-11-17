@@ -12,20 +12,10 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
-void f_no_eliminar(void * nada){}
+void fEliminarVacio(void * _){}
 
-static int max(int a, int b) {
-    // Calcula el maximo entre a y b
-    return (((a) > (b)) ? (a) : (b));
-}
-
-static int min(int a, int b) {
-    // Calcula el minimo entre a y b
-    return (((a) < (b)) ? (a) : (b));
-}
-
-void fEliminarBusqueda(tElemento e){
-    tEstado aux=(tEstado)e;
+void fEliminarBusqueda(tElemento e) {
+    tEstado aux = (tEstado) e;
     // liberador de estados
     free(aux);
 }
@@ -41,8 +31,8 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     if (estado == NULL) exit(IA_ERROR_MEMORIA);
 
     // Se clona el estado del tablero de la partida, al estado inicial de la b�squeda adversaria.
-    for(i=0; i<3; i++){
-        for(j=0; j<3; j++){
+    for(i=0; i<3; i++) {
+        for(j=0; j<3; j++) {
             estado->grilla[i][j] = p->tablero->grilla[i][j];
         }
     }
@@ -130,6 +120,9 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
 void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
     a_destruir(&(*b)->arbol_busqueda,&fEliminarBusqueda); // Destruye el arbol de busqueda
     free(*b); // Libera el struct busqueda
+    *b = NULL;
+    free(b);
+    b = NULL;
 }
 
 // ===============================================================================================================
@@ -159,81 +152,7 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 - JUGADOR_MAX y JUGADOR_MIN indican las fichas con las que juegan los respectivos jugadores.
 **/
 
-static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) { /*
-
-    // Si es un nodo terminal
-    if ( valor_utilidad(a_recuperar(a,n), (es_max)?jugador_max:jugador_min) != IA_NO_TERMINO) {
-        // Calcula su valor de utilidad
-        ((tEstado)a_recuperar(a, n))->utilidad = valor_utilidad((tEstado)a_recuperar(a, n), (es_max)?jugador_max:jugador_min);
-        // y sale
-        return;
-    }
-
-    // Si es un nodo a calcular, inicia
-    // Creo las variables
-    tLista sucesores;
-    tPosicion ultimoSucesor;
-    tPosicion primerSucesor;
-    int mejor_valor_sucesores, valorSucesor;
-
-
-
-    if (es_max) {
-
-        mejor_valor_sucesores = IA_INFINITO_NEG;
-        sucesores = estados_sucesores(a_recuperar(a, n), jugador_max);
-        ultimoSucesor = l_fin(sucesores);
-        primerSucesor = l_primera(sucesores);
-
-        while (primerSucesor != ultimoSucesor ) {
-
-            crear_sucesores_min_max(a, n, !es_max, alpha, beta, jugador_max, jugador_min);
-            valorSucesor = ((tEstado)a_recuperar(a, n))->utilidad;
-
-            mejor_valor_sucesores = max(mejor_valor_sucesores,valorSucesor);
-            alpha = max(alpha, mejor_valor_sucesores);
-
-            if (beta <= alpha) {
-                break;
-            }
-
-            primerSucesor = l_siguiente(sucesores, primerSucesor);
-
-        }
-
-
-        ((tEstado)a_recuperar(a, n))->utilidad = alpha;
-    }
-    else {
-        mejor_valor_sucesores = IA_INFINITO_POS;
-        sucesores = estados_sucesores(a_recuperar(a, n), jugador_min);
-        ultimoSucesor = l_fin(sucesores);
-        primerSucesor = l_primera(sucesores);
-
-        while (primerSucesor != ultimoSucesor ){
-
-            crear_sucesores_min_max(a, n, !es_max, alpha, beta, jugador_max, jugador_min);
-            valorSucesor = ((tEstado)a_recuperar(a, n))->utilidad;
-
-            mejor_valor_sucesores = min(mejor_valor_sucesores,valorSucesor);
-            alpha = min(alpha, mejor_valor_sucesores);
-
-            if (beta >= alpha) {
-                break;
-            }
-
-            primerSucesor = l_siguiente(sucesores, primerSucesor);
-        }
-
-
-        ((tEstado)a_recuperar(a, n))->utilidad = beta;
-    }
-
-    l_destruir(&sucesores,f_no_eliminar);*/
-
-    ///Guardo en una variable auxiliar el elemento del nodo encontrado en el arbol y el nodo pasados por paramentro.
-    ///Ejecuto la funcion minimax pasando por parametro el elemento del nodo anteriormente guardado,el entero que identifica al jugador y dos variables que identifican el valor de utilidad.
-    ///Declaracion de variables.
+static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
     tEstado estado=n->elemento;
     tLista sucesores;
     tPosicion posActualSucesores;
@@ -241,68 +160,64 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tEstado sucesorAct;
     int encontro = 0;
 
-    ///Si es un estado final devuelve la utilidad.
-    estado->utilidad=valor_utilidad(estado,jugador_max);
-    if(estado->utilidad==IA_NO_TERMINO){
-        ///Si esJugadorMax !=0 significa que es un estado max.
-        if(es_max){
-            ///Inicializo las variables.
+    estado->utilidad = valor_utilidad(estado,jugador_max); // Calcula el valor de utilidad
+
+    if (estado->utilidad == IA_NO_TERMINO) { // Si no termino, hace el algoritmo
+
+        if (es_max) {
             sucesores = estados_sucesores(estado,jugador_max);
             posActualSucesores = l_primera(sucesores);
             finSucesores = l_fin(sucesores);
-            ///Exploro la lista de estados hijos del estado actual.
-            while(posActualSucesores!=finSucesores&&!encontro){
-                ///Recupero el estado de la posicion de la lista de hijos.
-                sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
-                ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado min.
-                sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
-                tNodo hijoActual = a_insertar(a,n,NULL,sucesorAct);
-                crear_sucesores_min_max(a,hijoActual,0,alpha,beta,jugador_max,jugador_min);//Este esta bien.Creo, le paso 0 para que vaya al else.
-                ///Si la utilidad del hijo es mayor a la anteriormente calculada la reemplazo por el nuevo valor.
+
+            while (posActualSucesores != finSucesores && !encontro) {
+                sucesorAct = (tEstado) l_recuperar(sucesores, posActualSucesores);
+                sucesorAct->utilidad = valor_utilidad(sucesorAct, jugador_max);
+                tNodo hijoActual = a_insertar(a, n, NULL, sucesorAct);
+                crear_sucesores_min_max(a, hijoActual, 0, alpha, beta, jugador_max, jugador_min);
                 tEstado estadoSucesor = hijoActual->elemento;
-                //if(estadoSucesor->utilidad<mejorValorSucesores)
-                //    mejorValorSucesores= caca->utilidad;
-                ///Si alpha es menor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
-                if(alpha<estadoSucesor->utilidad)
+
+                if (alpha < estadoSucesor->utilidad) {
                     alpha = estadoSucesor->utilidad;
-                ///Si beta es menor  o igual a alpha, podo.
-                if(beta<=alpha){
+                }
+
+                if (beta <= alpha) {
                     encontro = 1;
                 }
-                ///Actualizo la posicion en la lista de hijos.
+
                 posActualSucesores = l_siguiente(sucesores,posActualSucesores);
             }
+
             estado->utilidad = alpha;
         }
-            ///Si esJugadorMax =0 significa que es un estado min.
-        else{
-            ///Inicializo las variables.
-            sucesores = estados_sucesores(estado,jugador_min);
+
+        else { // de if(esMax)
+
+            sucesores = estados_sucesores(estado, jugador_min);
             posActualSucesores = l_primera(sucesores);
             finSucesores = l_fin(sucesores);
-            ///Exploro la lista de estados hijos del estado actual.
-            while(posActualSucesores!=finSucesores&&!encontro){
-                ///Recupero el estado de la posicion de la lista de hijos.
-                sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
-                ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado max.
-                tNodo hijoActual =a_insertar(a,n,NULL,sucesorAct);
-                sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
-                crear_sucesores_min_max(a,hijoActual,1,alpha,beta,jugador_max,jugador_min);//Este le paso para que en el sig vaya al if y no al else
-                ///Si la utilidad del hijo es menor a la anteriormente calculada la reemplazo por el nuevo valor.
-                tEstado estadoSucesor=hijoActual->elemento;
-                ///Si beta es mayor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
-                if(estadoSucesor->utilidad<beta)
+
+            while (posActualSucesores != finSucesores && !encontro) {
+
+                sucesorAct = (tEstado) l_recuperar(sucesores, posActualSucesores);
+                tNodo hijoActual = a_insertar(a, n, NULL, sucesorAct);
+                sucesorAct->utilidad = valor_utilidad(sucesorAct, jugador_max);
+                crear_sucesores_min_max(a, hijoActual, 1, alpha, beta, jugador_max, jugador_min);
+                tEstado estadoSucesor = hijoActual->elemento;
+
+                if (estadoSucesor->utilidad < beta) {
                     beta = estadoSucesor->utilidad;
-                ///Si beta es menor  o igual a alpha, podo.
-                if(beta<=alpha){
+                }
+
+                if (beta <= alpha) {
                     encontro = 1;
                 }
-                ///Actualizo la posicion en la lista de hijos.
+
                 posActualSucesores = l_siguiente(sucesores,posActualSucesores);
             }
             estado->utilidad = beta;
         }
-        l_destruir(&sucesores,f_no_eliminar);
+        
+        l_destruir(&sucesores,fEliminarVacio);
     }
 }
 

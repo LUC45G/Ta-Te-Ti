@@ -155,9 +155,7 @@ void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 }
 
 
-void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
-    // Recorre el arbol en post orden y lo elimina poco a poco
-//    destruirRecursivo(a, fEliminar, (*a)->raiz);
+void a_destruir(tArbol * a, void (*fEliminar)(tElemento)) {
     fEliminarParaDestruir = fEliminar;
     l_destruir(&((*a)->raiz->hijos), &fEliminarLocal);
 
@@ -202,18 +200,16 @@ void MostrarArbol(tArbol arbol, tNodo raiz) {
         return;
 
     tPosicion primer = l_primera(hijos);
-    tPosicion fin    = l_fin(hijos);
+    int length = l_longitud(hijos);
 
     Profundidad(raiz); // Calcula la profundidad del nodo
     printf("%i\n", (int) raiz->elemento); // Imprime su elemento, asumiendo que es un entero
 
-    while(primer != hijos && primer != fin) { // Luego por cada hijo
+    while(length > 0) { // Luego por cada hijo
         MostrarArbol(arbol, l_recuperar(hijos, primer)); // Repite
         primer = l_siguiente(hijos, primer);
+        length--;
     }
-
-    if( primer != hijos ) // Caso especial en que tiene un solo elemento
-        MostrarArbol(arbol, l_recuperar(hijos, primer));
 }
 
 void Profundidad(tNodo raiz) {

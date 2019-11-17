@@ -8,7 +8,7 @@ void fEliminar(tElemento e) {
 }
 
 
-int mainArbol() {
+int mainArbolTest() {
     tArbol arbol;
     tNodo raiz = malloc(sizeof(tNodo));
     int condition = 1, control2 = 0, control1 = 0, padre = 0, hermano = 0, aAgregar = 0, i = 0;
@@ -19,7 +19,7 @@ int mainArbol() {
 
 
     while(condition) {
-        printf("Ingrese numero : \n1->Crear arbol vacío \n2->Crear raiz  \n3->Agregar elemento \n4->Mostrar Arbol \n5-> Sub-Arbol \n6-> Eliminar nodo \n0->Salir\n\n");
+        printf("Ingrese numero : \n1->Crear arbol vacï¿½o \n2->Crear raiz  \n3->Agregar elemento \n4->Mostrar Arbol \n5-> Sub-Arbol \n6-> Eliminar nodo \n0->Salir\n\n");
         scanf("%i", &condition);
 
         switch(condition) {
@@ -33,7 +33,7 @@ int mainArbol() {
 
             case 2:
 
-                if (control1){ //SI SE CREÓ EL ARBOL:
+                if (control1){ //SI SE CREï¿½ EL ARBOL:
                     printf("Ingrese el valor a agregar: \n");
                     scanf("%i", &i);
                     crear_raiz(arbol,(tElemento) i);
@@ -48,7 +48,6 @@ int mainArbol() {
                 break;
 
             case 3:
-                //-1073741819 el error que nos da siempre
                 printf("\n\n");
 
                 if(control2){
@@ -62,7 +61,7 @@ int mainArbol() {
                         break;
                     }
 
-                    if( l_primera(a_hijos(arbol, p)) == a_hijos(arbol, p)  ) {
+                    if( l_longitud(a_hijos(arbol, p)) == 0 ) {
                         printf("Que queres agregar\n");
                         scanf("%i", &aAgregar);
 
@@ -70,8 +69,6 @@ int mainArbol() {
                         printf("\nElemento %i agregado con exito.\n\n", (int) a_recuperar(arbol, l_recuperar(a_hijos(arbol, raiz), l_primera(a_hijos(arbol, raiz)))));
                         break;
                     }
-
-
 
                     printf("Ahora el hermano\n");
                     scanf("%i", &hermano);
@@ -105,14 +102,14 @@ int mainArbol() {
                 MostrarArbol(arbol, raiz);
                 break;
             case 5:
-                printf("Ingrese numero que será raiz del nuevo sub-arbol\n");
+                printf("Ingrese numero que serï¿½ raiz del nuevo sub-arbol\n");
                 int raizSA;
                 scanf("%i", &raizSA);
                 tArbol subArbol;
                 crear_arbol(&subArbol);
                 a_sub_arbol(arbol,buscarNodo(arbol,raiz, (tElemento)raizSA),&subArbol);
 
-                printf("Operación realizada con éxito\n\n");
+                printf("Operaciï¿½n realizada con ï¿½xito\n\n");
 
                 MostrarArbol(subArbol, a_raiz(subArbol));
                 printf("\n\n");
