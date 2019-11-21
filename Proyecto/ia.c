@@ -153,72 +153,82 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 **/
 
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
-    tEstado estado=n->elemento;
-    tLista sucesores;
-    tPosicion posActualSucesores;
-    tPosicion finSucesores;
-    tEstado sucesorAct;
-    int encontro = 0;
 
-    estado->utilidad = valor_utilidad(estado,jugador_max); // Calcula el valor de utilidad
-
-    if (estado->utilidad == IA_NO_TERMINO) { // Si no termino, hace el algoritmo
-
-        if (es_max) {
-            sucesores = estados_sucesores(estado,jugador_max);
-            posActualSucesores = l_primera(sucesores);
-            finSucesores = l_fin(sucesores);
-
-            while (posActualSucesores != finSucesores && !encontro) {
-                sucesorAct = (tEstado) l_recuperar(sucesores, posActualSucesores);
-                sucesorAct->utilidad = valor_utilidad(sucesorAct, jugador_max);
-                tNodo hijoActual = a_insertar(a, n, NULL, sucesorAct);
-                crear_sucesores_min_max(a, hijoActual, 0, alpha, beta, jugador_max, jugador_min);
-                tEstado estadoSucesor = hijoActual->elemento;
-
-                if (alpha < estadoSucesor->utilidad) {
-                    alpha = estadoSucesor->utilidad;
-                }
-
-                if (beta <= alpha) {
-                    encontro = 1;
-                }
-
-                posActualSucesores = l_siguiente(sucesores,posActualSucesores);
-            }
-
-            estado->utilidad = alpha;
-        }
-
-        else { // de if(esMax)
-
-            sucesores = estados_sucesores(estado, jugador_min);
-            posActualSucesores = l_primera(sucesores);
-            finSucesores = l_fin(sucesores);
-
-            while (posActualSucesores != finSucesores && !encontro) {
-
-                sucesorAct = (tEstado) l_recuperar(sucesores, posActualSucesores);
-                tNodo hijoActual = a_insertar(a, n, NULL, sucesorAct);
-                sucesorAct->utilidad = valor_utilidad(sucesorAct, jugador_max);
-                crear_sucesores_min_max(a, hijoActual, 1, alpha, beta, jugador_max, jugador_min);
-                tEstado estadoSucesor = hijoActual->elemento;
-
-                if (estadoSucesor->utilidad < beta) {
-                    beta = estadoSucesor->utilidad;
-                }
-
-                if (beta <= alpha) {
-                    encontro = 1;
-                }
-
-                posActualSucesores = l_siguiente(sucesores,posActualSucesores);
-            }
-            estado->utilidad = beta;
-        }
-        
-        l_destruir(&sucesores,fEliminarVacio);
+    int util = valor_utilidad((tEstado)a_recuperar(a, n), jugador_max);
+//    printf("%d", util);
+    if ( util != IA_NO_TERMINO) {
+        ((tEstado)a_recuperar(a, n))->utilidad = util;
+        return;
     }
+
+    tLista sucesores;
+    tPosicion ultimoSucesor;
+    tPosicion primerSucesor;
+    tEstado sucesorActual, estado = a_recuperar(a, n);
+    int mejor_valor, valor_actual;
+
+
+    if (es_max) {
+        mejor_valor = IA_INFINITO_NEG;
+        sucesores = estados_sucesores(estado, jugador_max);
+        ultimoSucesor = l_fin(sucesores);
+        primerSucesor = l_primera(sucesores);
+
+        while (primerSucesor != ultimoSucesor ) {
+
+            sucesorActual = (tEstado) l_recuperar(sucesores, primerSucesor);
+            sucesorActual->utilidad = valor_utilidad(primerSucesor, jugador_max);
+            tNodo hijoActual = a_insertar(a, n, NULL, sucesorActual);
+            crear_sucesores_min_max(a, hijoActual, !es_max, alpha, beta, jugador_max, jugador_min);
+            primerSucesor = l_siguiente(sucesores, primerSucesor);
+            valor_actual = sucesorActual->utilidad;
+
+            if(mejor_valor < valor_actual) {
+                mejor_valor = valor_actual;
+            }
+
+            if (alpha < mejor_valor) {
+                alpha = mejor_valor;
+            }
+
+            if (beta <= alpha) {
+                break;
+            }
+        }
+
+        estado->utilidad = alpha;
+    }
+    else {
+        mejor_valor = IA_INFINITO_POS;
+        sucesores = estados_sucesores(estado, jugador_min);
+        ultimoSucesor = l_fin(sucesores);
+        primerSucesor = l_primera(sucesores);
+
+        while (primerSucesor != ultimoSucesor ){
+
+            sucesorActual = (tEstado) l_recuperar(sucesores, primerSucesor);
+            sucesorActual->utilidad = valor_utilidad(primerSucesor, jugador_max);
+            tNodo hijoActual = a_insertar(a, n, NULL, sucesorActual);
+            crear_sucesores_min_max(a, hijoActual, !es_max, alpha, beta, jugador_max, jugador_min);
+            primerSucesor = l_siguiente(sucesores, primerSucesor);
+            valor_actual = sucesorActual->utilidad;
+
+            if(mejor_valor > valor_actual) {
+                mejor_valor = valor_actual;
+            }
+
+            if (mejor_valor < beta) {
+                beta = mejor_valor;
+            }
+
+            if (beta <= alpha) {
+                break;
+            }
+        }
+        estado->utilidad = beta;
+    }
+
+    l_destruir(&sucesores,fEliminarVacio);
 }
 
 /**
@@ -256,7 +266,7 @@ static int valor_utilidad(tEstado e, int jugador_max) {
 
     // Chequeo por columna
     for(i = 0; i < 3; ++i) {
-        if(e->grilla[0][i] == e->grilla[i][1] && e->grilla[1][i] == e->grilla[2][i]) {
+        if(e->grilla[0][i] == e->grilla[1][i] && e->grilla[0][i] == e->grilla[2][i]) {
             if(e->grilla[0][i] == max) {
                 return IA_GANA_MAX;
             }
