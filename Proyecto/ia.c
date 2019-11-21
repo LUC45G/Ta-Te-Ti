@@ -155,7 +155,7 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min) {
 
     int util = valor_utilidad((tEstado)a_recuperar(a, n), jugador_max);
-//    printf("%d", util);
+    //printf("%d", util);
     if ( util != IA_NO_TERMINO) {
         ((tEstado)a_recuperar(a, n))->utilidad = util;
         return;

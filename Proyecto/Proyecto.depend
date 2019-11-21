@@ -58,3 +58,63 @@
 	"lista.h"
 	"arbol.h"
 
+1574368571 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\arbol.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+	"lista.h"
+
+1574368174 c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\arbol.h
+	"lista.h"
+
+1574368174 c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\lista.h
+
+1574368174 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\arboltest.c
+	<stdio.h>
+	<stdlib.h>
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+	"lista.h"
+
+1574368174 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\arboltestpl.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
+
+1574368510 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\ia.c
+	<stdlib.h>
+	<stdio.h>
+	"lista.h"
+	"arbol.h"
+	"ia.h"
+
+1574368174 c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\ia.h
+	"arbol.h"
+	"partida.h"
+
+1574368174 c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\partida.h
+
+1574368174 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"arbol.h"
+
+1574368174 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\listtest.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1574368454 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\main.c
+	<stdio.h>
+	<stdlib.h>
+	"ia.h"
+	"partida.h"
+
+1574368174 source:c:\pablo\uni\tatetifinal\ta-te-ti\proyecto\partida.c
+	<stdio.h>
+	<stdlib.h>
+	"partida.h"
+

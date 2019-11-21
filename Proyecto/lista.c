@@ -43,19 +43,23 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)) {
 }
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)) {
-    tPosicion aux, auxAnterior;
-    int finish;
+    tPosicion actual = (*l)->siguiente;
+    tPosicion anterior;
 
-    while(!finish) {
-        aux = *l;
-        while (aux->siguiente != NULL ) { // Por cada elemento dentro de la lista
-            fEliminar( (tElemento) aux->elemento); // Lo elimina con la funcion previa
-            auxAnterior = aux;
-            aux = l_siguiente(*l, aux); // Movimiento de punteros
-            free(auxAnterior); // Liberaci�n de memoria
-        }
-        finish = *l != NULL;
+    while(actual != NULL){ // Mientras no se acabe la lista
+
+        // Elimina los datos del nodo actual y setea el auxiliar
+        fEliminar(actual->elemento);
+        anterior = actual;
+        actual = (anterior->siguiente);
+
+        anterior->elemento = NULL;    //Elimina punteros
+        anterior->siguiente = NULL;
+        free(anterior);
     }
+
+    free(*l); //Elimina puntero a la lista
+    l = NULL;   //Elimina puntero de puntero a la lista
 }
 
 tElemento l_recuperar(tLista l, tPosicion p) {
