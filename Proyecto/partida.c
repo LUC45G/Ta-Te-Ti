@@ -33,13 +33,13 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
         (*p)->nombre_jugador_2[i] = '\0';
     }
 
+    i = 0;
     while(j1_nombre[i] != '\n' && j1_nombre[i] != '\0') {
         (*p)->nombre_jugador_1[i] = j1_nombre[i];
         i++;
     }
 
     i = 0;
-
     while(j2_nombre[i] != '\n' && j2_nombre[i] != '\0') {
         (*p)->nombre_jugador_2[i] = j2_nombre[i];
         i++;

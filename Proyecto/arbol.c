@@ -86,7 +86,7 @@ void f(tElemento e) {}
 void a_eliminar(tArbol a, tNodo pa, void (*fEliminar)(tElemento)) {
 
     tPosicion hijo = NULL, ultimoHermano = NULL, paPos = NULL, primerHermano = NULL;
-    tNodo padre = NULL, hijoNodo = NULL, ultimaInsercion = NULL;
+    tNodo padre = NULL, hijoNodo = NULL;
     int length = 0;
     tLista hermanos = NULL;
 
@@ -224,7 +224,7 @@ void Profundidad(tNodo raiz) {
 
 tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
     tLista lista = raizActual->hijos; // Pide la lista de hijos
-    tPosicion auxFin = NULL, aux = NULL;
+    tPosicion aux = NULL;
     tNodo recursive = NULL;
     int length = 0;
 
@@ -237,7 +237,6 @@ tNodo buscarNodo(tArbol a, tNodo raizActual, tElemento e) {
     }
 
     length = l_longitud(lista);
-    auxFin = l_fin(lista);
     aux = l_primera(lista);
 
     while ( length > 0 ) { // Sino, recorre la lista de hijos en busca del nodo

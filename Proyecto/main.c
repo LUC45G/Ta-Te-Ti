@@ -177,7 +177,8 @@ int main() {
     scanf("%i", &empieza);
 
     if(empieza == 3) {
-        empieza = (rand()%2) + 1;
+        int r = rand();
+        empieza = (r%2) + 1;
     }
 
     nueva_partida(&partida, opt, empieza, j1, j2);
@@ -233,3 +234,5 @@ int main() {
 
     return 0;
 }
+
+//NUESTRO
